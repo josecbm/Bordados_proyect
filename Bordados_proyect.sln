@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bordados_proyect", "Bordados_proyect\Bordados_proyect.csproj", "{96FB44A9-8825-418D-AAA9-EBD4C3197C6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api_bordados", "api_bordados\api_bordados.csproj", "{43C8BF47-2E13-4277-A73A-58F8AA2409B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{96FB44A9-8825-418D-AAA9-EBD4C3197C6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96FB44A9-8825-418D-AAA9-EBD4C3197C6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96FB44A9-8825-418D-AAA9-EBD4C3197C6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96FB44A9-8825-418D-AAA9-EBD4C3197C6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43C8BF47-2E13-4277-A73A-58F8AA2409B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43C8BF47-2E13-4277-A73A-58F8AA2409B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43C8BF47-2E13-4277-A73A-58F8AA2409B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43C8BF47-2E13-4277-A73A-58F8AA2409B8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1E2DF1A8-7EBB-4F12-8AD8-93ACD6DDF4D3}
+	EndGlobalSection
+EndGlobal

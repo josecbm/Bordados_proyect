@@ -1,0 +1,55 @@
+﻿<Window x:Class="Bordados_proyect.Config_windows.newCliente"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bordados_proyect.Config_windows"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="newCliente" Height="600" Width="600" ResizeMode="NoResize" WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="16*"/>
+            <RowDefinition Height="37*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28*"/>
+                <RowDefinition Height="153*"/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="GridBarraTitulo" Background="#FF0D6CBA" Grid.Row="0" VerticalAlignment="top" Height="29" Grid.RowSpan="2" MouseDown="GridBarraTitulo_MouseDown"   >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Background="{x:Null}" >
+                    <Button x:Name="btnNotificacion" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white">
+                        <materialDesign:PackIcon Kind="Bell"/>
+                    </Button>
+                    <Button x:Name="btnMinimize" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white">
+                        <materialDesign:PackIcon Kind="WindowMinimize"/>
+                    </Button>
+                    <Button x:Name="btnPower" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white" Margin="0,0,0,2" VerticalAlignment="Bottom" Click="BtnPower_Click">
+                        <materialDesign:PackIcon Kind="Power"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="35,51,0,0" TextWrapping="Wrap" Text="Nombre:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="46"/>
+            <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="127,44,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese el nombre" Grid.Row="1"/>
+            <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="35,82,0,0" TextWrapping="Wrap" Text="Direccion:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="52"/>
+            <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" Margin="35,113,0,0" TextWrapping="Wrap" Text="Telefono:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="39"/>
+            <TextBox x:Name="txtDireccion" HorizontalAlignment="Left" Height="23" Margin="127,81,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese la direccion" Grid.Row="1"/>
+            <TextBox x:Name="txtTelefono" HorizontalAlignment="Left" Height="23" Margin="127,113,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese telefono" Grid.Row="1"/>
+            <TextBlock x:Name="textBlock_Copy2" HorizontalAlignment="Left" Margin="281,50,0,0" TextWrapping="Wrap" Text="Nit:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="19"/>
+            <TextBox x:Name="txtNit" HorizontalAlignment="Left" Height="23" Margin="373,43,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese el nit" Grid.Row="1"/>
+            <TextBlock x:Name="textBlock_Copy4" HorizontalAlignment="Left" Margin="281,85,0,0" TextWrapping="Wrap" Text="Correo:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="60"/>
+            <TextBox x:Name="txtCorreo" HorizontalAlignment="Left" Height="23" Margin="373,75,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese el correo" Grid.Row="1"/>
+            <Button x:Name="btnAceptar" Content="Agregar" HorizontalAlignment="Left" Margin="362,115,0,0" VerticalAlignment="Top" Width="87" Background="#FF1CA261" Click="BtnAceptar_Click" Grid.Row="1"/>
+            <Button x:Name="btnOtro" Content="Cancelar" HorizontalAlignment="Left" Margin="469,115,0,0" VerticalAlignment="Top" Width="90" Background="#FFDD5044" Click="BtnOtro_Click" Grid.Row="1"/>
+
+        </Grid>
+        <Grid Height="25" VerticalAlignment="Top" Margin="17" Grid.Row="1">
+            <TextBox x:Name="textBox_buscador" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap"  VerticalAlignment="Top" Width="300"  materialDesign:HintAssist.Hint="Buscar  clientes en la base de datos" KeyUp="TextBox_buscador_KeyUp"/>
+
+        </Grid>
+        <Grid Grid.Row="1">
+            <DataGrid x:Name="dtClientes" ItemsSource="{Binding}" VerticalAlignment="Top" Height="303" Width="550" Margin="0,47,0,0"></DataGrid>
+        </Grid>
+    </Grid>
+</Window>

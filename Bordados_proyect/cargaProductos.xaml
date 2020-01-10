@@ -1,0 +1,48 @@
+﻿<Window x:Class="Bordados_proyect.cargaProductos"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bordados_proyect"
+        mc:Ignorable="d"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="cargaProductos" Height="385.288" Width="371.903" ResizeMode="NoResize" WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32*"/>
+            <RowDefinition Height="353*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="GridBarraTitulo" Background="#FF0D6CBA" Grid.Row="0" VerticalAlignment="top" Height="29" Grid.RowSpan="2" MouseDown="GridBarraTitulo_MouseDown"  >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Background="{x:Null}" >
+                <Button x:Name="btnNotificacion" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white">
+                    <materialDesign:PackIcon Kind="Bell"/>
+                </Button>
+                <Button x:Name="btnMinimize" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white" Click="BtnMinimize_Click">
+                    <materialDesign:PackIcon Kind="WindowMinimize"/>
+                </Button>
+                <Button x:Name="btnPower" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white" Click="BtnPower_Click">
+                    <materialDesign:PackIcon Kind="Power"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <ComboBox HorizontalAlignment="Center" x:Name="comboEmpresa" VerticalAlignment="Top" Width="200"   Background="#FFE0C048" FontSize="16" materialDesign:HintAssist.Hint="Seleccione una empresa" Margin="26,48,146,0">
+
+            </ComboBox>
+            <ComboBox HorizontalAlignment="Center" x:Name="comboTalla" VerticalAlignment="Top" Width="200" Background="#FFE04848" Margin="26,86,146,0" FontSize="16" materialDesign:HintAssist.Hint="Seleccione una Talla">
+
+            </ComboBox>
+            <ComboBox HorizontalAlignment="Center" x:Name="comboPrenda" VerticalAlignment="Top" Width="200" Background="#FF5963CD"  Margin="26,126,146,0" FontSize="16" materialDesign:HintAssist.Hint="Tipo de prenda">
+
+            </ComboBox>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="156,10,0,0" TextWrapping="Wrap" Text="Prendas" VerticalAlignment="Top" FontSize="20"/>
+            <TextBox x:Name="txt_nombrePrenda" HorizontalAlignment="Left" Height="23" Margin="169,182,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Nombre de la prenda"  VerticalAlignment="Top" Width="146"/>
+            <TextBox x:Name="txt_precio" HorizontalAlignment="Left" Height="23" Margin="39,232,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Precio costo"  VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="txt_precio_venta" HorizontalAlignment="Left" Height="23" Margin="195,232,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Precio venta"  VerticalAlignment="Top" Width="120"/>
+            <Button x:Name="btnAceptar_productos" Content="Aceptar" HorizontalAlignment="Left" Margin="171,303,0,0" VerticalAlignment="Top" Width="85" Background="#FF22A044" Click="BtnAceptar_productos_Click"/>
+            <Button x:Name="btnCancelar_productos" Content="Cancelar" HorizontalAlignment="Left" Margin="261,303,0,0" VerticalAlignment="Top" Width="88" Background="#FFE04848" Click="BtnCancelar_productos_Click"/>
+            <Button x:Name="btnCargaMasiva" Content="Cargar" HorizontalAlignment="Left" Margin="239,48,0,0" VerticalAlignment="Top" Width="110" Height="103" Click="BtnCargaMasiva_Click"/>
+            <TextBox x:Name="txtCodigo" HorizontalAlignment="Left" Height="23" Margin="39,182,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="codigo" VerticalAlignment="Top" Width="120"/>
+        </Grid>
+    </Grid>
+</Window>
