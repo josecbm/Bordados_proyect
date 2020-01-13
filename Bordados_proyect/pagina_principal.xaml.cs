@@ -34,6 +34,8 @@ namespace Bordados_proyect
         string connectionString = "SERVER=localhost;DATABASE=bordados_db;UID=root;PASSWORD=1234;";
         MySqlConnection connection;
         DataTable data_flujo_ventas = new DataTable();
+        private Timer timer1;
+
         public pagina_principal(int vendedor)
         {
             InitializeComponent();
@@ -51,11 +53,24 @@ namespace Bordados_proyect
             showOrdenesPendientes();
             showFacturas();
             showVendedor();
+            InitTimer();
 
-            DispatcherTimer dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 6);
-            dispatcherTimer.Start();
+            //DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            //dispatcherTimer.Tick += new EventHandler(timer1_Tick);
+            //dispatcherTimer.Interval = new TimeSpan(0, 0, 6);
+            //dispatcherTimer.Start();
+        }
+        public void InitTimer()
+        {
+            timer1 = new Timer();
+            timer1.Tick += new EventHandler(timer1_Tick);
+            timer1.Interval = 2000; // in miliseconds
+            timer1.Start();
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            showOrdenesPendientes();
+//            showFacturas();
         }
 
         public void showOrdenesPendientes()
@@ -66,8 +81,9 @@ namespace Bordados_proyect
                 " inner join usr on factura.idVendedor = usr.id" +
                 " where cobro = 0; ", connection);
             DataTable dt = new DataTable();
-            dt_ordenes_pend.DataContext = dt;
             dt.Load(cmd.ExecuteReader());
+            dt_ordenes_pend.DataContext = dt;
+            
             connection.Close();
         }
         public void showVendedor()
@@ -118,6 +134,8 @@ namespace Bordados_proyect
         }
         public void showFacturas()
         {
+
+            
             banderaFlujoVentas = 0;
             connection.Open();
 
@@ -648,6 +666,13 @@ namespace Bordados_proyect
 
             dt_flujo_ventas.DataContext = data_flujo_ventas;
             connection.Close();
+        }
+
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("entro en boton de actualizar ordenes");
+            showOrdenesPendientes();
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)

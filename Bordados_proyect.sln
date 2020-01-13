@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bordados_proyect", "Bordado
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api_bordados", "api_bordados\api_bordados.csproj", "{43C8BF47-2E13-4277-A73A-58F8AA2409B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ws-bordados", "ws-bordados\ws-bordados.csproj", "{67D8FF5E-2B0B-49DB-B5B0-3213AB6B110A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{43C8BF47-2E13-4277-A73A-58F8AA2409B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43C8BF47-2E13-4277-A73A-58F8AA2409B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43C8BF47-2E13-4277-A73A-58F8AA2409B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67D8FF5E-2B0B-49DB-B5B0-3213AB6B110A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D8FF5E-2B0B-49DB-B5B0-3213AB6B110A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D8FF5E-2B0B-49DB-B5B0-3213AB6B110A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67D8FF5E-2B0B-49DB-B5B0-3213AB6B110A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

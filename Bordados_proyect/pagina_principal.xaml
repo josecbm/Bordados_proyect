@@ -97,7 +97,7 @@
 
 
 
-        <Grid x:Name="ventas" Grid.Column="1" Background="Gainsboro" Margin="10,30,0,0" Grid.RowSpan="2" Visibility="Hidden">
+        <Grid x:Name="ventas" Grid.Column="1" Background="Gainsboro" Margin="10,30,0,0" Grid.RowSpan="2" Visibility="Visible">
 
             <ScrollViewer>
                 <Grid >
@@ -122,7 +122,13 @@
                         <DataGrid x:Name="dt_ordenes_pend" ItemsSource="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="735" Height="191" Margin="26,29,36,-59.8" SelectionChanged="Dt_ordenes_pend_SelectionChanged"/>
                     </Grid>
                     <Grid Grid.Row="1" >
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Top" Background="#FFE0C048" Foreground="#FF2C2A2A" Click="Button_Click_5" Margin="0,168,78,0">
+                        <Button HorizontalAlignment="Center" VerticalAlignment="Top" Background="Ivory" Foreground="#FF2C2A2A"  Margin="0,80,78.8,0" Click="Button_Click_6">
+                            <Grid Width="150">
+                                <materialDesign:PackIcon Kind="Create"/>
+                                <TextBlock HorizontalAlignment="Center" Text="Actualizar" />
+                            </Grid>
+                        </Button>
+                        <Button HorizontalAlignment="Center" VerticalAlignment="Top" Background="#FFE0C048" Foreground="#FF2C2A2A" Click="Button_Click_5" Margin="0,163,80.8,0">
                             <Grid Width="150">
                                 <materialDesign:PackIcon Kind="Create"/>
                                 <TextBlock HorizontalAlignment="Center" Text="Generar orden" />
@@ -147,8 +153,10 @@
                                 <TextBlock HorizontalAlignment="Center" Text="Ventas del dia" />
                             </Grid>
                         </Button>
+                        
 
                     </Grid>
+
                     <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
 
                         <Rectangle  Margin="-62,68,10,10" Fill="#FFFAFAFA"  RadiusX="10" RadiusY="10"></Rectangle>
