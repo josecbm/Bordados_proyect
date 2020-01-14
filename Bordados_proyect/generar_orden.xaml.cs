@@ -156,7 +156,19 @@ namespace Bordados_proyect
         {
             connection.Open();
             DataTable dt = new DataTable();
-            if (empresaSeleccionada.Length > 3 && tallaSeleccionada.Length > 2 && tipoSeleccionado.Length > 3)
+
+            //si solo cambia talla 
+            if (!tallaSeleccionada.Equals("") && empresaSeleccionada.Equals("") && tipoSeleccionado.Equals("") )
+            {
+                MySqlCommand cmd = new MySqlCommand("select Prenda.id,nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa ,prenda.precio    from movimiento " +
+              "inner join prenda on movimiento.idPrenda = prenda.id" +
+              " inner join tipoprenda on prenda.idTipoPrenda = tipoprenda.id" +
+              " inner join talla on prenda.idTalla = talla.id " +
+              "inner join empresa on prenda.idEmpresa = empresa.id where idBodega = 1 and talla.descripcion ='" + tallaSeleccionada
+              + "'", connection);
+                dt.Load(cmd.ExecuteReader());
+            }
+            if (!tallaSeleccionada.Equals("") && !empresaSeleccionada.Equals("") && !tipoSeleccionado.Equals(""))
             {
                 MySqlCommand cmd = new MySqlCommand("select Prenda.id,nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa ,prenda.precio    from movimiento " +
                 "inner join prenda on movimiento.idPrenda = prenda.id" +
@@ -166,7 +178,7 @@ namespace Bordados_proyect
                 + "' and talla.descripcion =' " + tallaSeleccionada + "' and tipoprenda.tipoprenda = '" + tipoSeleccionado + "'", connection);
 
                 dt.Load(cmd.ExecuteReader());
-            } else if (empresaSeleccionada.Length > 3 && tallaSeleccionada.Length > 2 && tipoSeleccionado.Length < 3)
+            } else if (!tallaSeleccionada.Equals("") && !empresaSeleccionada.Equals("") && tipoSeleccionado.Equals(""))
             {
                 MySqlCommand cmd = new MySqlCommand("select Prenda.id,nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa ,prenda.precio    from movimiento " +
                "inner join prenda on movimiento.idPrenda = prenda.id" +
@@ -176,7 +188,7 @@ namespace Bordados_proyect
                + "' and talla.descripcion = '" + tallaSeleccionada + "'", connection);
                 dt.Load(cmd.ExecuteReader());
             }
-            else if (empresaSeleccionada.Length > 3 && tallaSeleccionada.Length < 2 && tipoSeleccionado.Length > 3)
+            else if (tallaSeleccionada.Equals("") && !empresaSeleccionada.Equals("") && !tipoSeleccionado.Equals(""))
             {
                 MySqlCommand cmd = new MySqlCommand("select Prenda.id,nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa ,prenda.precio    from movimiento " +
                "inner join prenda on movimiento.idPrenda = prenda.id" +
@@ -186,7 +198,7 @@ namespace Bordados_proyect
                + "' and tipoprenda.tipoprenda = '" + tipoSeleccionado + "'", connection);
                 dt.Load(cmd.ExecuteReader());
             }
-            else if (empresaSeleccionada.Length > 3 && tallaSeleccionada.Length < 2 && tipoSeleccionado.Length < 3)
+            else if (tallaSeleccionada.Equals("") && !empresaSeleccionada.Equals("") && tipoSeleccionado.Equals(""))
             {
                 MySqlCommand cmd = new MySqlCommand("select Prenda.id,nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa ,prenda.precio    from movimiento " +
                "inner join prenda on movimiento.idPrenda = prenda.id" +
@@ -196,7 +208,7 @@ namespace Bordados_proyect
                + "'", connection);
                 dt.Load(cmd.ExecuteReader());
             }
-            else if (empresaSeleccionada.Length < 3 && tallaSeleccionada.Length > 2 && tipoSeleccionado.Length > 3)
+            else if (!tallaSeleccionada.Equals("") && empresaSeleccionada.Equals("") && !tipoSeleccionado.Equals(""))
             {
                 MySqlCommand cmd = new MySqlCommand("select Prenda.id,nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa ,prenda.precio    from movimiento " +
                "inner join prenda on movimiento.idPrenda = prenda.id" +
@@ -206,7 +218,7 @@ namespace Bordados_proyect
                + "' and tipoprenda.tipoprenda ='" + tipoSeleccionado + "'", connection);
                 dt.Load(cmd.ExecuteReader());
             }
-            else if (empresaSeleccionada.Length < 3 && tallaSeleccionada.Length > 2 && tipoSeleccionado.Length < 3)
+            else if (!tallaSeleccionada.Equals("") && empresaSeleccionada.Equals("") && tipoSeleccionado.Equals(""))
             {
                 MySqlCommand cmd = new MySqlCommand("select Prenda.id,nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa ,prenda.precio    from movimiento " +
                "inner join prenda on movimiento.idPrenda = prenda.id" +
@@ -216,7 +228,7 @@ namespace Bordados_proyect
                + "'", connection);
                 dt.Load(cmd.ExecuteReader());
             }
-            else if (empresaSeleccionada.Length < 3 && tallaSeleccionada.Length < 2 && tipoSeleccionado.Length > 3)
+            else if (tallaSeleccionada.Equals("") && empresaSeleccionada.Equals("") && !tipoSeleccionado.Equals(""))
             {
                 MySqlCommand cmd = new MySqlCommand("select Prenda.id,nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa ,prenda.precio    from movimiento " +
                "inner join prenda on movimiento.idPrenda = prenda.id" +

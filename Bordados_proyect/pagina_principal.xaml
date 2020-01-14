@@ -135,19 +135,19 @@
                             </Grid>
                         </Button>
 
-                        <Button Margin="0,205,78,0" HorizontalAlignment="Center" VerticalAlignment="Top" Background="#FFE04848" Foreground="#FF2C2A2A">
+                        <Button Margin="0,205,78,0" HorizontalAlignment="Center" VerticalAlignment="Top" Background="#FFE04848" Foreground="#FF2C2A2A" Click="Button_Click_9">
                             <Grid Width="150">
                                 <materialDesign:PackIcon Kind="Create"/>
                                 <TextBlock HorizontalAlignment="Center" Text="Disponibilidad" />
                             </Grid>
                         </Button>
-                        <Button HorizontalAlignment="Center"  VerticalAlignment="Center" Background="#FF5963CD" Foreground="#FF2C2A2A" Margin="0,227,78,31">
+                        <Button HorizontalAlignment="Center"  VerticalAlignment="Center" Background="#FF5963CD" Foreground="#FF2C2A2A" Margin="0,227,78,31" Click="Button_Click_7">
                             <Grid Width="150">
                                 <materialDesign:PackIcon Kind="Create"/>
                                 <TextBlock HorizontalAlignment="Center" Text="Pedidos" />
                             </Grid>
                         </Button>
-                        <Button Margin="0,0,78,10"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#FF007ACC" Foreground="#FF2C2A2A">
+                        <Button Margin="0,0,78,10"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#FF007ACC" Foreground="#FF2C2A2A" Click="Button_Click_8">
                             <Grid Width="150">
                                 <materialDesign:PackIcon Kind="Create"/>
                                 <TextBlock HorizontalAlignment="Center" Text="Ventas del dia" />

@@ -35,6 +35,7 @@ namespace Bordados_proyect
         MySqlConnection connection;
         DataTable data_flujo_ventas = new DataTable();
         private Timer timer1;
+        int banderaBusquedaDinamica;
 
         public pagina_principal(int vendedor)
         {
@@ -46,6 +47,7 @@ namespace Bordados_proyect
             connection = new MySqlConnection(connectionString);
             
             estadoActual = 0;
+            banderaBusquedaDinamica = 0;
             
             showInventarioTienda();
             fillCombo_Bodegas();
@@ -303,9 +305,43 @@ namespace Bordados_proyect
 
         private void TextBox_buscador_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-          
+            MySqlCommand cmd2;
+            if (banderaBusquedaDinamica == 0)
+            {
+                cmd2 = new MySqlCommand("select nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa, precio as Precio,stock    from movimiento " +
+              "inner join prenda on movimiento.idPrenda = prenda.id" +
+              " inner join tipoprenda on prenda.idTipoPrenda = tipoprenda.id" +
+              " inner join talla on prenda.idTalla = talla.id " +
+              "inner join empresa on prenda.idEmpresa = empresa.id where idBodega = 1 and  nombrePrenda like('%" + textBox_buscador.Text + "%') ; ", connection);
+            }
+            else if(banderaBusquedaDinamica == 1)
+            {
+                cmd2 = new MySqlCommand("select p.nombrePrenda , pe.cantidad , pe.fecha_emision , pe.fecha_entrega from pedido pe" +
+                                                " inner join detalle d on d.idPrenda = pe.idPrenda" +
+                                                " inner join prenda p on p.id = d.idPrenda where nombrePrenda like('%" + textBox_buscador.Text + "%'); ", connection);
+
+                                                
+            }
+            else if(banderaBusquedaDinamica == 2)
+            {
+                cmd2 = new MySqlCommand("select c.nombre as Cliente , c.nit as NIT , f.total as Total , u.nombre as Vendedor , f.fecha as Fechahora from factura f" +
+                                               " inner join cliente c on c.id = f.idCliente" +
+                                               " inner join usr u on u.id = f.idVendedor where c.nit like('%" + textBox_buscador.Text + "%');; ", connection);
+
+            }
+            else if(banderaBusquedaDinamica == 3)
+            {
+                cmd2 = new MySqlCommand("select  from usr where nombre like('%" + textBox_buscador.Text + "%');", connection);
+            }else
+            {
+                cmd2 = new MySqlCommand("select nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa, precio as Precio,stock    from movimiento " +
+                 "inner join prenda on movimiento.idPrenda = prenda.id" +
+                 " inner join tipoprenda on prenda.idTipoPrenda = tipoprenda.id" +
+                 " inner join talla on prenda.idTalla = talla.id " +
+                 "inner join empresa on prenda.idEmpresa = empresa.id where idBodega = 1 and  nombrePrenda  like('%" + textBox_buscador.Text + "%') ; ", connection);
+            }
             connection.Open();
-            MySqlCommand cmd2 = new MySqlCommand("select * from usr where nombre like('%"+textBox_buscador.Text+"%');", connection);
+           
             
             DataTable dt_dinamica = new DataTable();
             dt_dinamica.Load(cmd2.ExecuteReader());
@@ -673,6 +709,42 @@ namespace Bordados_proyect
         {
             Console.WriteLine("entro en boton de actualizar ordenes");
             showOrdenesPendientes();
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            banderaBusquedaDinamica = 1;
+            connection.Open();
+
+            MySqlCommand cmd2 = new MySqlCommand("select p.nombrePrenda , pe.cantidad , pe.fecha_emision , pe.fecha_entrega from pedido pe"+
+                                                " inner join detalle d on d.idPrenda = pe.idPrenda"+
+                                                " inner join prenda p on p.id = d.idPrenda; ", connection);
+
+            DataTable dt2 = new DataTable();
+            dt2.Load(cmd2.ExecuteReader());
+
+            dt_disponibilidad.DataContext = dt2;
+            connection.Close();
+        }
+
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            banderaBusquedaDinamica = 2;
+            connection.Open();
+            MySqlCommand cmd2 = new MySqlCommand("select c.nombre as Cliente , c.nit as NIT , f.total as Total , u.nombre as Vendedor , f.fecha as Fechahora from factura f"+
+                                                " inner join cliente c on c.id = f.idCliente"+
+                                                " inner join usr u on u.id = f.idVendedor; ", connection);
+            DataTable dt2 = new DataTable();
+            dt2.Load(cmd2.ExecuteReader());
+
+            dt_disponibilidad.DataContext = dt2;
+            connection.Close();
+        }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+            banderaBusquedaDinamica = 0;
+            showInventarioTienda();
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)

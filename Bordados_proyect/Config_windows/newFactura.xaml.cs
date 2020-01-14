@@ -91,12 +91,16 @@ namespace Bordados_proyect.Config_windows
 
         private void BtnFacturar_Click(object sender, RoutedEventArgs e)
         {
+            //rstring NombreCorto1, int CodigoUnidadGravable1, string CantidadUnidadesGravables1, string MontoGravable1, string MontoImpuesto1);
+            double preciocantidad=0;
+            double codigoUnidadGravable = 0;
+            double cantidadUnidadGravable = 0;
+            double montoGravable = 0;
+            double montoImpuesto = 0;
+            double totalMontoImpuesto = 0;
 
-            double preciocantidad;
             int iterator = 1;
             int descuento = 0;
-            
-            
 
             string response;
             bool Datos_generales;
@@ -124,7 +128,7 @@ namespace Bordados_proyect.Config_windows
             // buscar cliente y llengar parametros ;
             string[] cadenaCliente = textBox.Text.Split('-');
             connection.Open();
-            MySqlCommand cmddataCliente = new MySqlCommand(" select id , nombre , direccion , email , nit from cliente where idCliente = "+cadenaCliente[1]+"", connection);
+            MySqlCommand cmddataCliente = new MySqlCommand(" select id , nombre , direccion , email , nit from cliente where id = "+cadenaCliente[2]+"", connection);
             MySqlDataReader fA = cmddataCliente.ExecuteReader();
             while (fA.Read())
             {
@@ -137,11 +141,8 @@ namespace Bordados_proyect.Config_windows
             
             connection.Close();
 
-
-
-            
             connection.Open();
-            MySqlCommand cmd = new MySqlCommand("update factura set cobro = 1 , idCliente = "+cadenaCliente[1]+"  where factura.id="+facturaActual+"" , connection);
+            MySqlCommand cmd = new MySqlCommand("update factura set cobro = 1 , idCliente = "+cadenaCliente[2]+"  where factura.id="+facturaActual+"" , connection);
             cmd.ExecuteNonQuery();
             connection.Close();
             this.Close();
@@ -151,30 +152,36 @@ namespace Bordados_proyect.Config_windows
             Datos_emisor = request.Datos_emisor("GEN", 1, "01001", "bordados.francy@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "CUIDAD", "5347319", "BORDADOS FRANCY", "BORDADOS");
             Datos_receptor = request.Datos_receptor(nitReceptor, nombreReceptor , "01001", correoReceptor, "GT", "GUATEMALA", "GUATEMALA", direccionReceptor, "");
             Frases = request.Frases(1, 1);
-            Frases = request.Frases(2, 1);
-           
+            
             foreach (DataRow row in dt2.Rows)
             {
 
                 //d.cantidad, p.nombrePrenda, p.id , d.precioTotal , f.fecha
-                Console.WriteLine(row["Valor"].ToString());
+               // Console.WriteLine(row["Valor"].ToString());
                 try
                 {
                     preciocantidad = 0;
                     preciocantidad = Double.Parse(row["precioTotal"].ToString()) * int.Parse(row["cantidad"].ToString());
-                    
+                    montoImpuesto = preciocantidad * 0.12;
+                    montoGravable = preciocantidad - montoImpuesto;
+                    totalMontoImpuesto += montoImpuesto;
                 }
                 catch (Exception)
                 {
 
                     throw;
                 }
-                Item_un_impuesto = request.Item_un_impuesto("B", "UND", row["cantidad"].ToString(), row["nombrePrenda"].ToString(), iterator, row["precioTotal"].ToString(), preciocantidad.ToString(), descuento.ToString(), totalFacturaActual.ToString(), "IVA", 1, "", "107.14", "12.86");
+                //       NombreCorto1, int CodigoUnidadGravable1, string CantidadUnidadesGravables1, string MontoGravable1, string MontoImpuesto1);
+                Item_un_impuesto = request.Item_un_impuesto("B", "UND", row["cantidad"].ToString(), row["nombrePrenda"].ToString(),
+                                    iterator, row["precioTotal"].ToString(), preciocantidad.ToString(), descuento.ToString(), totalFacturaActual.ToString(),
+                                    "IVA", iterator, row["cantidad"].ToString(), montoGravable.ToString(), montoImpuesto.ToString()) ;
+
+
                 iterator++;
             }
 
             // totalMonto = este va a ser la sumatoria de todos los montos acumulados 
-            Total_impuestos = request.total_impuestos("IVA", "12.86");
+            Total_impuestos = request.total_impuestos("IVA", totalMontoImpuesto.ToString()) ;
             Totales = request.Totales(totalFacturaActual.ToString());
             //Complemento_notas = request.Complemento_notas("","","","","","","","","");
             //Complemento_cambiaria = request.Complemento_cambiaria("","","");
@@ -182,12 +189,12 @@ namespace Bordados_proyect.Config_windows
             //Complemento_exportacion = request.Complemento_exportacion("","","","","","","","","","","","","");
 
 
-            Adenda = request.Adendas("Codigo_cliente", "C01");//Información Adicional
-            Adenda = request.Adendas("Observaciones", "ESTA ES UNA ADENDA");
+            Adenda = request.Adendas("Codigo_cliente", idReceptor) ;//Información Adicional
+            Adenda = request.Adendas("Observaciones", "ESTA ES UNA PRUEBA");
 
             Agregar_adenda = request.Agregar_adendas();
             //Adenda = request.Adendas("PERSONALIZADO1", "ESTA ES UNA ADENDA");
-            response = request.enviar_peticion_fel("DEMO_FEL"/*USUARIO*/, "8C6439B233B4FAA6BC2E7BA8E736A173"/*LLAVE*/, "NDEBEXC1"/*IDENTIFICADOR DEL DOCUMENTO*/, "demo@demo.com.gt"/*correo copia*/, "COUNISA"/*USUARIO*/, "9242cc46a4ef81a457680f2b6f02fb51"/*llave emisor*/, true);
+            response = request.enviar_peticion_fel("BORDADOS_FRANCY"/*USUARIO*/, "ed308938934731b734e9836bdb96ce57"/*LLAVE*/, "NDEBEXC1"/*IDENTIFICADOR DEL DOCUMENTO*/, "jcbautista95@gmail.com"/*correo copia*/, "BORDADOS_FRANCY"/*USUARIO*/, "F43E482EC149C5B7C475152FA265B43F"/*llave emisor*/, true);
             System.Windows.MessageBox.Show(response);
 
 
@@ -298,13 +305,13 @@ namespace Bordados_proyect.Config_windows
         {
             List<string> data = new List<string>();
             connection.Open();
-            MySqlCommand cmd = new MySqlCommand("select id , nombre from cliente", connection);
+            MySqlCommand cmd = new MySqlCommand("select id , nit , nombre from cliente", connection);
             AutoCompleteStringCollection autoCliente = new AutoCompleteStringCollection();
             MySqlDataReader clientes = cmd.ExecuteReader();
             while (clientes.Read())
             {
 
-                data.Add(clientes.GetString("nombre") + "-" + clientes.GetString("id"));
+                data.Add(clientes.GetString("nit")+ "-" + clientes.GetString("nombre") + "-" + clientes.GetString("id"));
             }
             connection.Close();
             return data;
