@@ -1,0 +1,33 @@
+﻿<Window x:Class="Bordados_proyect.Config_windows.detalleCompra"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="detalleCompra" Height="450" Width="800"  WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="13*"/>
+            <RowDefinition Height="209*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="GridBarraTitulo" Background="#FF0D6CBA" MouseDown="GridBarraTitulo_MouseDown" Grid.Row="0" VerticalAlignment="top" Height="29" Grid.RowSpan="2" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Background="{x:Null}" >
+                <Button x:Name="btnNotificacion" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white">
+                    <materialDesign:PackIcon Kind="Bell"/>
+                </Button>
+                <Button x:Name="btnMinimize" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white" Click="BtnMinimize_Click">
+                    <materialDesign:PackIcon Kind="WindowMinimize"/>
+                </Button>
+                <Button x:Name="btnPower" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white" Click="BtnPower_Click">
+                    <materialDesign:PackIcon Kind="Power"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid HorizontalAlignment="Left" Height="415" Background="Gainsboro" Margin="0,3,0,0" Grid.Row="1" VerticalAlignment="Top" Width="794">
+            <DataGrid x:Name="dt_reporteCompra"  ItemsSource="{Binding}" HorizontalAlignment="Left" Height="238" Margin="25,44,0,0" VerticalAlignment="Top" Width="725"/>
+            <Button x:Name="btnReporteExcel" Content="Reporte excel" HorizontalAlignment="Left" Margin="85,319,0,0" VerticalAlignment="Top" Width="154"/>
+        </Grid>
+        <Label x:Name="label" Content="DETALLE DE COMPRA" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="322,10,0,0" Grid.Row="1"/>
+    </Grid>
+</Window>

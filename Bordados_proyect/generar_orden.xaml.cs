@@ -110,7 +110,7 @@ namespace Bordados_proyect
 
         public void filldt_prendas()
         {
-            MySqlCommand cmd = new MySqlCommand("select Prenda.id,nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa ,prenda.precio    from movimiento " +
+            MySqlCommand cmd = new MySqlCommand("select Prenda.id,nombrePrenda as Prenda, descripcion as Talla , tipoPrenda as Tipo, nombreEmpresa as Empresa ,prenda.precio , stock   from movimiento " +
                 "inner join prenda on movimiento.idPrenda = prenda.id" +
                 " inner join tipoprenda on prenda.idTipoPrenda = tipoprenda.id" +
                 " inner join talla on prenda.idTalla = talla.id " +
@@ -122,7 +122,6 @@ namespace Bordados_proyect
                 DataTable dt = new DataTable();
 
                 dt.Load(cmd.ExecuteReader());
-                Console.WriteLine("entro en dt");
                 dt_prendas_bodega_tienda.DataContext = dt;
             }
             catch (Exception e)
@@ -487,10 +486,11 @@ namespace Bordados_proyect
                 }
                 if (banderaPedido)
                 {
+                    DateTime fecha = DateTime.Now;
 
                     //obtener el ultimo detalle 
                     connection.Open();
-                    MySqlCommand cmdLastid = new MySqlCommand("select max(id) from factura ", connection);
+                    MySqlCommand cmdLastid = new MySqlCommand("select max(idDetalle) from detalle", connection);
                     MySqlDataReader idLastDetalle = cmdLastid.ExecuteReader();
 
                     while (idLastDetalle.Read())
@@ -500,15 +500,41 @@ namespace Bordados_proyect
                     connection.Close();
 
                     connection.Open();
-                    string insertPedido = "insert into pedido(idDetalle , idPrenda , cantidad, observacion , fecha_emision , estado) " +
-                        "values(" + lastDetalle + "," + descripcion[1] + "," + cantidad + ",'pendiente de entrega',str_to_date('" + DateTime.Now.ToString("M/d/yyyy") + "', '%m/%d/%Y'))";
+                    string insertPedido = "insert into pedido(idDetalle , idPrenda , cantidad, observacion , fecha_emision , fecha_entrega , estado) " +
+                        "values(" + lastDetalle + "," + descripcion[1] + "," + cantidad + ",'pendiente de entrega',str_to_date('" + fecha.ToString("MM/d/yyyy")  + "', '%m/%d/%Y'), str_to_date('" + fecha.AddDays(20).ToString("MM/d/yyyy") + "', '%m/%d/%Y'),0)";
                     MySqlCommand cmd3 = new MySqlCommand(insertPedido, connection);
-
+                    cmd3.ExecuteNonQuery();
                     connection.Close();
                 }
                 else
                 {
                     Console.WriteLine("no pedido");
+                    // ################### agregar lo de rebajar aca ############################################
+
+                    connection.Open();
+                    MySqlParameter[] pms = new MySqlParameter[5];
+                    pms[0] = new MySqlParameter("idfactura", lastFactura);
+                    pms[1] = new MySqlParameter("quantity", cantidad);
+                    pms[2] = new MySqlParameter("precioUnitario", valorTotal);
+                    pms[3] = new MySqlParameter("idPrendaDebitar", Int32.Parse(descripcion[1]));
+                    pms[4] = new MySqlParameter("idBodegaDebitar", 1);
+                    MySqlCommand command = new MySqlCommand();
+
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.CommandText = "addRebajaInventario";
+                    command.Connection = connection;
+                    command.Parameters.Add("@res", MySqlDbType.VarChar).Direction = System.Data.ParameterDirection.Output;
+                    command.Parameters.AddRange(pms);
+                    if (command.ExecuteNonQuery() == 1)
+                    {
+                        //MessageBox.Show("yes"); 
+                        Console.WriteLine(Convert.ToString(command.Parameters["@res"].Value));
+                        if (Convert.ToString(command.Parameters["@res"].Value).Equals("1"))
+                        {
+                            System.Windows.MessageBox.Show("Revisar Inventario en tienda ");
+                        }
+                    }
+                    connection.Close();
                 }
             }
 

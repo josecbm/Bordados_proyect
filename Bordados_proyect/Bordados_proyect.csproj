@@ -120,8 +120,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Config_windows\detalleCompra.xaml.cs">
+      <DependentUpon>detalleCompra.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WebApiConfig.cs" />
     <Page Include="cargaProductos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Config_windows\detalleCompra.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

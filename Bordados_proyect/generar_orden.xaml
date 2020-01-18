@@ -43,15 +43,15 @@
                 <ComboBox HorizontalAlignment="Center" x:Name="comboPrenda" VerticalAlignment="Top" Width="200" Background="#FF5963CD"  Margin="95,100,95,0" FontSize="16" materialDesign:HintAssist.Hint="Tipo de prenda" SelectionChanged="ComboPrenda_SelectionChanged"/>
             </Grid>
             <Grid Grid.Column="0" Grid.Row="1" Margin="20,12.8,19.8,20.2" >
-                <Rectangle Fill="#FFFAFAFA" RadiusX="10" RadiusY="10" Margin="0,0,0,-1"/>
+                <Rectangle Fill="#FFFAFAFA" RadiusX="10" RadiusY="10" Margin="0,0,-49.8,-1"/>
                 <TextBox x:Name="txtBuscador" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Buscador..." Height="24" Margin="65,22,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" KeyUp="TxtBuscador_KeyUp_1" />
-                <DataGrid x:Name="dt_prendas_bodega_tienda" ItemsSource="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="482" Height="467" Margin="5,0,10.2,9" SelectionChanged="Dt_prendas_bodega_tienda_SelectionChanged" BeginningEdit="Dt_prendas_bodega_tienda_BeginningEdit"  />
+                <DataGrid x:Name="dt_prendas_bodega_tienda" ItemsSource="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="524" Height="467" Margin="5,0,-31.8,9" SelectionChanged="Dt_prendas_bodega_tienda_SelectionChanged" BeginningEdit="Dt_prendas_bodega_tienda_BeginningEdit"  />
             </Grid>
             <Grid Margin="2.2,0,-0.4,478.2" Grid.RowSpan="2" Grid.Column="1" />
             <Button x:Name="btnFacturar" Content="Facturar" Grid.Column="1" HorizontalAlignment="Left" Margin="537,113,0,0" VerticalAlignment="Top" Width="84" Height="32" Click="BtnFacturar_Click"/>
             <Grid Grid.Row="1" Margin="2.2,12.8,-0.4,0.2" Grid.Column="1">
-                <Rectangle Fill="#FFFAFAFA" Margin="10,0,10,23" RadiusX="5" RadiusY="5"/>
-                <DataGrid x:Name="dt_tablaResumen" VerticalAlignment="Center" ItemsSource="{Binding}" Height="460" Margin="10,27,10,60" CurrentCellChanged="Dt_tablaResumen_CurrentCellChanged"/>
+                <Rectangle Fill="#FFFAFAFA" Margin="42,0,10.2,31" RadiusX="5" RadiusY="5"/>
+                <DataGrid x:Name="dt_tablaResumen" VerticalAlignment="Center" ItemsSource="{Binding}" Height="460" Margin="74,27,10.2,60" CurrentCellChanged="Dt_tablaResumen_CurrentCellChanged"/>
                 <TextBlock x:Name="textBlock5" HorizontalAlignment="Left" Margin="299,492,0,0" TextWrapping="Wrap" Text="Total:" VerticalAlignment="Top" FontSize="18"/>
                 <TextBlock x:Name="txtTotal" HorizontalAlignment="Left" Margin="360,492,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" RenderTransformOrigin="-0.408,0.938" FontSize="18"/>
 

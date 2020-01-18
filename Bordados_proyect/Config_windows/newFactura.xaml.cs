@@ -97,10 +97,19 @@ namespace Bordados_proyect.Config_windows
             double cantidadUnidadGravable = 0;
             double montoGravable = 0;
             double montoImpuesto = 0;
+            int descuento = 0;
+
             double totalMontoImpuesto = 0;
+            string idDocumento;
+            
+
+            Guid guid = Guid.NewGuid();
+            Console.WriteLine(guid);
+            idDocumento = guid.ToString().Substring(0, 8);
+            
 
             int iterator = 1;
-            int descuento = 0;
+            
 
             string response;
             bool Datos_generales;
@@ -112,10 +121,12 @@ namespace Bordados_proyect.Config_windows
             bool Totales;
             bool Adenda;
             bool Agregar_adenda;
-            bool Complemento_notas;
-            bool Complemento_cambiaria;
-            bool Complemento_especial;
-            bool Complemento_exportacion;
+
+            string mg;
+            //bool Complemento_notas;
+            //bool Complemento_cambiaria;
+            //bool Complemento_especial;
+            //bool Complemento_exportacion;
 
 
 
@@ -128,14 +139,14 @@ namespace Bordados_proyect.Config_windows
             // buscar cliente y llengar parametros ;
             string[] cadenaCliente = textBox.Text.Split('-');
             connection.Open();
-            MySqlCommand cmddataCliente = new MySqlCommand(" select id , nombre , direccion , email , nit from cliente where id = "+cadenaCliente[2]+"", connection);
+            MySqlCommand cmddataCliente = new MySqlCommand("select id , nombre , direccion , email , nit from cliente where id = "+cadenaCliente[2]+"", connection);
             MySqlDataReader fA = cmddataCliente.ExecuteReader();
             while (fA.Read())
             {
                 idReceptor = fA.GetString(0);
                 nombreReceptor = fA.GetString(1);
                 direccionReceptor = fA.GetString(2);
-                nombreReceptor = fA.GetString(3);
+                correoReceptor = fA.GetString(3);
                 nitReceptor = fA.GetString(4);
             }
             
@@ -145,62 +156,56 @@ namespace Bordados_proyect.Config_windows
             MySqlCommand cmd = new MySqlCommand("update factura set cobro = 1 , idCliente = "+cadenaCliente[2]+"  where factura.id="+facturaActual+"" , connection);
             cmd.ExecuteNonQuery();
             connection.Close();
-            this.Close();
+           
 
             // esto esta pendiente 
-            Datos_generales = request.Datos_generales("GTQ", DateTime.Now.ToString("dd/MM/yyyy"), "FACT", "", "");
-            Datos_emisor = request.Datos_emisor("GEN", 1, "01001", "bordados.francy@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "CUIDAD", "5347319", "BORDADOS FRANCY", "BORDADOS");
+            string fechaFac = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+
+
+            Datos_generales = request.Datos_generales("GTQ", fechaFac, "FACT", "", "");
+            Datos_emisor = request.Datos_emisor("GEN", 1, "01001", "bordados.francy@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "CIUDAD", "5347319", "CARLOS BAUTISTA", "BORDADOS FRANCY");
             Datos_receptor = request.Datos_receptor(nitReceptor, nombreReceptor , "01001", correoReceptor, "GT", "GUATEMALA", "GUATEMALA", direccionReceptor, "");
-            Frases = request.Frases(1, 1);
-            
+            Frases = request.Frases(1,2);
+            //Frases = request.Frases(2,1);
             foreach (DataRow row in dt2.Rows)
             {
-
-                //d.cantidad, p.nombrePrenda, p.id , d.precioTotal , f.fecha
-               // Console.WriteLine(row["Valor"].ToString());
+               
                 try
                 {
                     preciocantidad = 0;
                     preciocantidad = Double.Parse(row["precioTotal"].ToString()) * int.Parse(row["cantidad"].ToString());
-                    montoImpuesto = preciocantidad * 0.12;
-                    montoGravable = preciocantidad - montoImpuesto;
+
+                    // string.Format("{0:n2}", (Math.Truncate(valor * 100) / 100)))
+                    montoGravable = (preciocantidad - descuento)/1.12;
+                    montoImpuesto = montoGravable * 0.12;
                     totalMontoImpuesto += montoImpuesto;
+                    
                 }
                 catch (Exception)
                 {
 
                     throw;
                 }
-                //       NombreCorto1, int CodigoUnidadGravable1, string CantidadUnidadesGravables1, string MontoGravable1, string MontoImpuesto1);
-                Item_un_impuesto = request.Item_un_impuesto("B", "UND", row["cantidad"].ToString(), row["nombrePrenda"].ToString(),
-                                    iterator, row["precioTotal"].ToString(), preciocantidad.ToString(), descuento.ToString(), totalFacturaActual.ToString(),
-                                    "IVA", iterator, row["cantidad"].ToString(), montoGravable.ToString(), montoImpuesto.ToString()) ;
+                string p1, p2, p3, p4, p5, p6;
+                p1 = row["cantidad"].ToString();
+                p2 = row["nombrePrenda"].ToString();
+                p3 = row["precioTotal"].ToString();
+                p4 = row["cantidad"].ToString();
+                Item_un_impuesto = request.Item_un_impuesto("B", "UND", p1, p2, iterator, p3, redondearDecimales(preciocantidad, 2).ToString(), descuento.ToString(), redondearDecimales(totalFacturaActual, 2).ToString(),
+                                    "IVA", iterator, "", redondearDecimales(montoGravable,2).ToString() , redondearDecimales(montoImpuesto, 2).ToString());
 
 
                 iterator++;
             }
-
-            // totalMonto = este va a ser la sumatoria de todos los montos acumulados 
-            Total_impuestos = request.total_impuestos("IVA", totalMontoImpuesto.ToString()) ;
-            Totales = request.Totales(totalFacturaActual.ToString());
-            //Complemento_notas = request.Complemento_notas("","","","","","","","","");
-            //Complemento_cambiaria = request.Complemento_cambiaria("","","");
-            //Complemento_especial = request.Complemento_especial("","","","","","");
-            //Complemento_exportacion = request.Complemento_exportacion("","","","","","","","","","","","","");
-
-
-            Adenda = request.Adendas("Codigo_cliente", idReceptor) ;//Información Adicional
+            Total_impuestos = request.total_impuestos("IVA", redondearDecimales(totalMontoImpuesto, 2).ToString());
+            Totales = request.Totales(redondearDecimales(totalFacturaActual, 2).ToString());
+            Adenda = request.Adendas("Codigo_cliente", "C01") ;//Información Adicional
             Adenda = request.Adendas("Observaciones", "ESTA ES UNA PRUEBA");
 
             Agregar_adenda = request.Agregar_adendas();
-            //Adenda = request.Adendas("PERSONALIZADO1", "ESTA ES UNA ADENDA");
-            response = request.enviar_peticion_fel("BORDADOS_FRANCY"/*USUARIO*/, "ed308938934731b734e9836bdb96ce57"/*LLAVE*/, "NDEBEXC1"/*IDENTIFICADOR DEL DOCUMENTO*/, "jcbautista95@gmail.com"/*correo copia*/, "BORDADOS_FRANCY"/*USUARIO*/, "F43E482EC149C5B7C475152FA265B43F"/*llave emisor*/, true);
+            response = request.enviar_peticion_fel("BORDADOS_FRANCY"/*USUARIO*/, "F43E482EC149C5B7C475152FA265B43F"/*LLAVE*/, idDocumento/*IDENTIFICADOR DEL DOCUMENTO*/, "bordados.francy@gmail.com"/*correo copia*/, "BORDADOS_FRANCY"/*USUARIO*/, "ed308938934731b734e9836bdb96ce57"/*llave emisor*/, true);
             System.Windows.MessageBox.Show(response);
-
-
             //#########################
-
-
             /*
              
                 USUARIO FIRMA:           BORDADOS_FRANCY  
@@ -211,15 +216,13 @@ namespace Bordados_proyect.Config_windows
                 LLAVE CERTIFICACIÓN:            F43E482EC149C5B7C475152FA265B43F  
                 NIT:  5347319
              */
+            this.Close();
         }
         
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)
         {
-            connection.Open();
-            MySqlCommand cmd = new MySqlCommand("", connection);
-            cmd.ExecuteNonQuery();
-            connection.Close();
+            
             this.Close();
         }
 
@@ -322,6 +325,8 @@ namespace Bordados_proyect.Config_windows
 
         }
 
+
+
         private void BtnDescuento_Click(object sender, RoutedEventArgs e)
         {
 
@@ -376,5 +381,16 @@ namespace Bordados_proyect.Config_windows
             connection.Close();
             txtObservacion.Text = "";
          }
+
+        public double redondearDecimales(double valorInicial, int numeroDecimales)
+        {
+            double parteEntera, resultado;
+            resultado = valorInicial;
+            parteEntera = Math.Floor(resultado);
+            resultado = (resultado - parteEntera) * Math.Pow(10, numeroDecimales);
+            resultado = Math.Round(resultado);
+            resultado = (resultado / Math.Pow(10, numeroDecimales)) + parteEntera;
+            return resultado;
+        }
     }
 }

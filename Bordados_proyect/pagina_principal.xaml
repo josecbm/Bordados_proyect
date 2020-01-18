@@ -55,7 +55,7 @@
                                 <materialDesign:PackIcon Kind="AccountPending" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="5,25,5,5" Foreground="White" Width="20" Height="Auto" />
                             </Grid>
                             <TextBlock Text="Pedidos pendientes" HorizontalAlignment="Right" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="Gray"/>
-                            <TextBlock Text="0" HorizontalAlignment="Right" FontFamily="Champagne &amp; Limousines"  VerticalAlignment="Center" Foreground="Gray" FontSize="30" Margin="5"/>
+                            <TextBlock Text="0" Name="txtPedidosPendientes" HorizontalAlignment="Right" FontFamily="Champagne &amp; Limousines"  VerticalAlignment="Center" Foreground="Gray" FontSize="30" Margin="5"/>
                             <StackPanel Orientation="Horizontal" >
                                 <materialDesign:PackIcon Kind="AlertOutline" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="5,25,5,5" Foreground="Gray" Width="15" Height="Auto" />
                                 <TextBlock Text="ultimos 30 dias" VerticalAlignment="Bottom" Foreground="Gray" Margin="5"/>
@@ -97,7 +97,7 @@
 
 
 
-        <Grid x:Name="ventas" Grid.Column="1" Background="Gainsboro" Margin="10,30,0,0" Grid.RowSpan="2" Visibility="Visible">
+        <Grid x:Name="ventas" Grid.Column="1" Background="Gainsboro" Margin="10,30,0,0" Grid.RowSpan="2" Visibility="Hidden">
 
             <ScrollViewer>
                 <Grid >
@@ -178,13 +178,13 @@
         </Grid>
 
 
-        <Grid x:Name="flujo_de_ventas" Grid.Column="1" Background="Gainsboro" Margin="10,30,0,0" Grid.RowSpan="2" Visibility="Hidden">
+        <Grid x:Name="flujo_de_ventas" Grid.Column="1" Background="Gainsboro" Margin="10,30,0,0" Grid.RowSpan="2" Visibility="Visible">
 
 
 
             <Rectangle Margin="54,50,76,281" Fill="#FFFAFAFA" RadiusX="10" RadiusY="10"/>
             <Rectangle Margin="38,348,493,25" Fill="#FFFAFAFA" RadiusX="10" RadiusY="10"/>
-            <DataGrid x:Name="dt_flujo_ventas" ItemsSource="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="684" Height="212" Margin="54,64,76,294"/>
+            <DataGrid x:Name="dt_flujo_ventas" ItemsSource="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="684" Height="212" Margin="54,64,76,294" SelectionChanged="dt_flujo_ventas_SelectionChanged"/>
             <DatePicker HorizontalAlignment="Left"  Name="fecha_init" Margin="69,376,0,0" VerticalAlignment="Top" Width="237" Height="33"/>
             <DatePicker HorizontalAlignment="Left" Name="fecha_end" Margin="69,438,0,0" VerticalAlignment="Top" Width="237" Height="33" Visibility="Hidden"/>
             <CheckBox x:Name="checkBox_oneDate" Content="Rango de fechas" HorizontalAlignment="Left" Margin="143,508,0,0" VerticalAlignment="Top" Checked="CheckBox_oneDate_Checked"/>

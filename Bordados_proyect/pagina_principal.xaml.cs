@@ -19,6 +19,7 @@ using SpreadsheetLight;
 using DocumentFormat.OpenXml;
 using System.Globalization;
 using System.IO;
+using Bordados_proyect.Config_windows;
 
 namespace Bordados_proyect
 {
@@ -52,6 +53,7 @@ namespace Bordados_proyect
             showInventarioTienda();
             fillCombo_Bodegas();
             ventaDia();
+            pedidosPendientesDia();
             showOrdenesPendientes();
             showFacturas();
             showVendedor();
@@ -72,12 +74,13 @@ namespace Bordados_proyect
         private void timer1_Tick(object sender, EventArgs e)
         {
             showOrdenesPendientes();
+            ventaDia();
+            pedidosPendientesDia();
 //            showFacturas();
         }
 
         public void showOrdenesPendientes()
         {
-
             connection.Open();
             MySqlCommand cmd = new MySqlCommand("select factura.id, fecha  , usr.nombre as Vendedor , total as Total from factura" +
                 " inner join usr on factura.idVendedor = usr.id" +
@@ -117,6 +120,20 @@ namespace Bordados_proyect
 
             connection.Close();
 
+        }
+        public void pedidosPendientesDia()
+        {
+            connection.Open();
+
+            string val = " select count(id) from pedido where estado=0 and fecha_emision = curdate()";
+            MySqlCommand cmd = new MySqlCommand(val, connection);
+            MySqlDataReader r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                txtPedidosPendientes.Text = r[0].ToString();
+            }
+
+            connection.Close();
         }
         public void showInventarioTienda()
         {
@@ -174,11 +191,10 @@ namespace Bordados_proyect
         {
             banderaFlujoVentas = 1;
             connection.Open();
-            MySqlCommand cmd2 = new MySqlCommand("select  c.nombre , c.telefono, p.nombrePrenda , pe.cantidad , pe.observacion , pe.fecha_emision , pe.fecha_entrega from pedido pe" +
-          " inner join detalle d on d.idDetalle = pe.idDetalle " +
-          " inner join factura f on f.id = d.idFactura " +
-          " inner join cliente c on c.id = f.idCliente " +
-          "inner join prenda p on p.id = pe.idPrenda ", connection);
+            MySqlCommand cmd2 = new MySqlCommand("select  c.nombre , c.telefono, p.nombrePrenda , pe.cantidad , pe.observacion , pe.fecha_emision , pe.fecha_entrega from pedido pe inner join detalle d on d.idDetalle = pe.idDetalle "+
+                                     " inner join factura f on f.id = d.idFactura"+
+                                     " inner join cliente c on c.id = f.idCliente"+
+                                     " inner join prenda p on p.id = pe.idPrenda; ", connection);
             data_flujo_ventas = new DataTable();
             data_flujo_ventas.Load(cmd2.ExecuteReader());
 
@@ -717,8 +733,8 @@ namespace Bordados_proyect
             connection.Open();
 
             MySqlCommand cmd2 = new MySqlCommand("select p.nombrePrenda , pe.cantidad , pe.fecha_emision , pe.fecha_entrega from pedido pe"+
-                                                " inner join detalle d on d.idPrenda = pe.idPrenda"+
-                                                " inner join prenda p on p.id = d.idPrenda; ", connection);
+                                                " inner join detalle d on d.idDetalle = pe.idDetalle " +
+                                                " inner join prenda p on p.id = pe.idPrenda; ", connection);
 
             DataTable dt2 = new DataTable();
             dt2.Load(cmd2.ExecuteReader());
@@ -745,6 +761,26 @@ namespace Bordados_proyect
         {
             banderaBusquedaDinamica = 0;
             showInventarioTienda();
+        }
+
+        private void dt_flujo_ventas_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            System.Windows.Controls.DataGrid gd = (System.Windows.Controls.DataGrid)sender;
+            DataRowView row_selected = gd.SelectedItem as DataRowView;
+            if (row_selected != null)
+            {
+                // dt_orden.Rows.Add(new object[] { 1, row_selected[1].ToString() + "-" + row_selected[0].ToString(), row_selected[5], cantidad * double.Parse(row_selected[5].ToString()), false });
+                Console.WriteLine(row_selected[0].ToString());
+                Console.WriteLine(row_selected[1].ToString());
+                Console.WriteLine(row_selected[2].ToString());
+                Console.WriteLine(row_selected[3].ToString());
+                Console.WriteLine(row_selected[4].ToString());
+                Console.WriteLine(row_selected[5].ToString());
+                detalleCompra dc = new detalleCompra(int.Parse(row_selected[0].ToString()));
+                dc.Show();
+                
+
+            }
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
