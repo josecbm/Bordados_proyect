@@ -26,7 +26,7 @@
         </Grid>
         <Grid HorizontalAlignment="Left" Height="415" Background="Gainsboro" Margin="0,3,0,0" Grid.Row="1" VerticalAlignment="Top" Width="794">
             <DataGrid x:Name="dt_reporteCompra"  ItemsSource="{Binding}" HorizontalAlignment="Left" Height="238" Margin="25,44,0,0" VerticalAlignment="Top" Width="725"/>
-            <Button x:Name="btnReporteExcel" Content="Reporte excel" HorizontalAlignment="Left" Margin="85,319,0,0" VerticalAlignment="Top" Width="154"/>
+            <Button x:Name="btnReporteExcel" Content="Reporte excel" HorizontalAlignment="Left" Margin="85,319,0,0" VerticalAlignment="Top" Width="154" Click="btnReporteExcel_Click"/>
         </Grid>
         <Label x:Name="label" Content="DETALLE DE COMPRA" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="322,10,0,0" Grid.Row="1"/>
     </Grid>

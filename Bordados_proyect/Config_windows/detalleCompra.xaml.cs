@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SpreadsheetLight;
 
 namespace Bordados_proyect.Config_windows
 {
@@ -73,6 +74,17 @@ namespace Bordados_proyect.Config_windows
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
+        }
+
+        private void btnReporteExcel_Click(object sender, RoutedEventArgs e)
+        {
+            string datetimeActual = DateTime.Now.ToString("yyyy-MM-ddThh_mm_ss");
+            string path;
+            path ="reporte_compra_" + datetimeActual + ".xlsx";
+            SLDocument documentoExcel = new SLDocument();
+        
+            documentoExcel.ImportDataTable(1, 1, dt2, true);
+            documentoExcel.SaveAs(path);
         }
     }
 }

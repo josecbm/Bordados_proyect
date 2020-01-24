@@ -76,7 +76,9 @@ namespace Bordados_proyect
             showOrdenesPendientes();
             ventaDia();
             pedidosPendientesDia();
-//            showFacturas();
+            showInventarioTienda();
+            showFacturas();
+            //            showFacturas();
         }
 
         public void showOrdenesPendientes()
@@ -110,14 +112,13 @@ namespace Bordados_proyect
         {
             connection.Open();
 
-            string val = "select sum(f.total) as total from factura f where f.fecha between \'" + DateTime.Now.ToString("yyyy-M-d") + "  00:00:00\' and  \'" + DateTime.Now.ToString("yyyy-M-d") + " 12:59:59\'  and cobro=1";
+            string val = "select sum(f.total) as total from factura f where f.fecha between \'" + DateTime.Now.ToString("yyyy-M-d") + "  00:00:00\' and  \'" + DateTime.Now.ToString("yyyy-M-d") + " 23:59:59\'  and cobro=1";
             MySqlCommand cmd = new MySqlCommand(val, connection);
             MySqlDataReader r = cmd.ExecuteReader();
             while (r.Read())
             {
                 txtVentaDia.Text = "Q." + r[0].ToString();
             }
-
             connection.Close();
 
         }
@@ -678,15 +679,15 @@ namespace Bordados_proyect
             string path;
             if (banderaFlujoVentas == 0)
             {
-                path = System.Environment.SpecialFolder.MyDocuments + "reporte_ventas_"+datetimeActual+".xlsx";
+                path =  "reporte_ventas_"+datetimeActual+".xlsx";
             }
             else if(banderaFlujoVentas == 1)
             {
-                path = System.Environment.SpecialFolder.MyDocuments + "reporte_pedidos_"+datetimeActual+".xlsx";
+                path =  "reporte_pedidos_"+datetimeActual+".xlsx";
             }
             else if (banderaFlujoVentas == 2)
             {
-                path = System.Environment.SpecialFolder.MyDocuments + "reporte_observaciones_" + datetimeActual + ".xlsx";
+                path =  "reporte_observaciones_" + datetimeActual + ".xlsx";
             }
             else
             {

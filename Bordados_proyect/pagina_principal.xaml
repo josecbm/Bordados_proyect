@@ -42,7 +42,7 @@
                                 <materialDesign:PackIcon Kind="ContentCopy" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="5" Foreground="White" Width="20" Height="20" />
                             </Grid>
                             <TextBlock Text="Ventas del dia" HorizontalAlignment="Right" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="Gray"/>
-                            <TextBlock Text="Q.100.00"  Name="txtVentaDia" HorizontalAlignment="Right" FontFamily="Champagne &amp; Limousines"  VerticalAlignment="Center" Foreground="Gray" FontSize="20" Margin="5"/>
+                            <TextBlock   Name="txtVentaDia" HorizontalAlignment="Right" FontFamily="Champagne &amp; Limousines"  VerticalAlignment="Center" Foreground="Gray" FontSize="20" Margin="5"/>
                         </Grid>
                     </Grid>
                     <Grid Grid.Column="1">

@@ -31,9 +31,10 @@ namespace Bordados_proyect.Config_windows
         string connectionString = "SERVER=localhost;DATABASE=bordados_db;UID=root;PASSWORD=1234;";
         RequestCertificacionFel request = new RequestCertificacionFel();
         MySqlConnection connection;
-        int facturaActual;
+        int facturaActual , contadorDescuento;
         double totalFacturaActual;
         bool banderaDescuento;
+        
         DataTable dt2;
         //receptor(string IDReceptor, string NombreReceptor, string CodigoPostal, string CorreoReceptor, string Pais, string Departamento, string Municipio, string Direccion, string TipoEspecial);
         string idReceptor, nombreReceptor, correoReceptor, nitReceptor, direccionReceptor;
@@ -41,6 +42,7 @@ namespace Bordados_proyect.Config_windows
         {
             InitializeComponent();
             connection = new MySqlConnection(connectionString);
+            contadorDescuento = 0;
             facturaActual = factura;
             showFacturaDetails();
             getTotalFactura();
@@ -92,22 +94,24 @@ namespace Bordados_proyect.Config_windows
         private void BtnFacturar_Click(object sender, RoutedEventArgs e)
         {
             //rstring NombreCorto1, int CodigoUnidadGravable1, string CantidadUnidadesGravables1, string MontoGravable1, string MontoImpuesto1);
-            double preciocantidad=0;
-            double codigoUnidadGravable = 0;
-            double cantidadUnidadGravable = 0;
-            double montoGravable = 0;
-            double montoImpuesto = 0;
-            int descuento = 0;
-
-            double totalMontoImpuesto = 0;
+            decimal preciocantidad=0;
+            int codigoUnidadGravable = 0;
+            int cantidadUnidadGravable = 0;
+            decimal montoGravable = 0;
+            decimal montoImpuesto = 0;
+            decimal descuento = 0;
+            decimal precioUnitario =0;
+            decimal TotalFactura = 0;
+            decimal totalMontoImpuesto = 0;
             string idDocumento;
             
 
             Guid guid = Guid.NewGuid();
             Console.WriteLine(guid);
             idDocumento = guid.ToString().Substring(0, 8);
-            
 
+            saveCodigoFactura(facturaActual, idDocumento);
+            
             int iterator = 1;
             
 
@@ -121,6 +125,8 @@ namespace Bordados_proyect.Config_windows
             bool Totales;
             bool Adenda;
             bool Agregar_adenda;
+
+            string quantity, nombrePrenda, precio;
 
             string mg;
             //bool Complemento_notas;
@@ -146,7 +152,7 @@ namespace Bordados_proyect.Config_windows
                 idReceptor = fA.GetString(0);
                 nombreReceptor = fA.GetString(1);
                 direccionReceptor = fA.GetString(2);
-                correoReceptor = fA.GetString(3);
+                correoReceptor = fA.GetString(3) ;
                 nitReceptor = fA.GetString(4);
             }
             
@@ -166,56 +172,72 @@ namespace Bordados_proyect.Config_windows
             Datos_emisor = request.Datos_emisor("GEN", 1, "01001", "bordados.francy@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "CIUDAD", "5347319", "CARLOS BAUTISTA", "BORDADOS FRANCY");
             Datos_receptor = request.Datos_receptor(nitReceptor, nombreReceptor , "01001", correoReceptor, "GT", "GUATEMALA", "GUATEMALA", direccionReceptor, "");
             Frases = request.Frases(1,2);
-            //Frases = request.Frases(2,1);
+            Frases = request.Frases(2, 1);
             foreach (DataRow row in dt2.Rows)
             {
-               
+
                 try
                 {
-                    preciocantidad = 0;
-                    preciocantidad = Double.Parse(row["precioTotal"].ToString()) * int.Parse(row["cantidad"].ToString());
+
+                    quantity = row["cantidad"].ToString();
+                    nombrePrenda = row["nombrePrenda"].ToString();
+                    precio = row["precioTotal"].ToString();
+                    precioUnitario = Decimal.Parse(precio) / int.Parse(quantity);
+
+                    preciocantidad = montoGravable = montoImpuesto = 0;
+                    preciocantidad = precioUnitario * int.Parse(row["cantidad"].ToString());
 
                     // string.Format("{0:n2}", (Math.Truncate(valor * 100) / 100)))
-                    montoGravable = (preciocantidad - descuento)/1.12;
-                    montoImpuesto = montoGravable * 0.12;
+                    montoGravable = (preciocantidad - descuento) / 1.12m;
+                    montoImpuesto = montoGravable * 0.12m;
                     totalMontoImpuesto += montoImpuesto;
-                    
+
                 }
                 catch (Exception)
                 {
 
                     throw;
                 }
-                string p1, p2, p3, p4, p5, p6;
-                p1 = row["cantidad"].ToString();
-                p2 = row["nombrePrenda"].ToString();
-                p3 = row["precioTotal"].ToString();
-                p4 = row["cantidad"].ToString();
-                Item_un_impuesto = request.Item_un_impuesto("B", "UND", p1, p2, iterator, p3, redondearDecimales(preciocantidad, 2).ToString(), descuento.ToString(), redondearDecimales(totalFacturaActual, 2).ToString(),
-                                    "IVA", iterator, "", redondearDecimales(montoGravable,2).ToString() , redondearDecimales(montoImpuesto, 2).ToString());
+                try
+                {
+                    //calculando el descuento por item
+                    if (contadorDescuento >= 1)
+                    {
+                        descuento = preciocantidad * (contadorDescuento * 5);
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+                decimal precioTotal = preciocantidad;
+                decimal totalLinea = montoGravable + montoImpuesto;
+                decimal montoSinIva = montoGravable;
+                decimal montoIva = montoImpuesto;
+                string precioUNitariostr = precioUnitario.ToString("N10");
 
 
+                Item_un_impuesto = request.Item_un_impuesto("B", "UND", quantity/*CANTIDAD*/, nombrePrenda, iterator, precioUnitario.ToString("N10")/*PRECIO X UNIDAD*/,
+                    precioTotal.ToString("N10")/*TOTAL SIN DESC*/, descuento.ToString()/*DESCUENTO*/, totalLinea.ToString("N10")/*TOTAL*/, "IVA", 1, "",
+                    montoSinIva.ToString("N10")/*MONTOGRAVABLE*/, montoIva.ToString("N10")/*MONTOIMPUESTO*/);
+                TotalFactura += (montoGravable + montoImpuesto);
                 iterator++;
             }
-            Total_impuestos = request.total_impuestos("IVA", redondearDecimales(totalMontoImpuesto, 2).ToString());
-            Totales = request.Totales(redondearDecimales(totalFacturaActual, 2).ToString());
-            Adenda = request.Adendas("Codigo_cliente", "C01") ;//Información Adicional
+
+
+
+            decimal imp = totalMontoImpuesto;
+            decimal tot = TotalFactura;
+            Total_impuestos = request.total_impuestos("IVA", imp.ToString("N10"));
+            Totales = request.Totales(tot.ToString("N10"));
+            Adenda = request.Adendas("Codigo_cliente", idReceptor.ToString());//Información Adicional
             Adenda = request.Adendas("Observaciones", "ESTA ES UNA PRUEBA");
 
             Agregar_adenda = request.Agregar_adendas();
-            response = request.enviar_peticion_fel("BORDADOS_FRANCY"/*USUARIO*/, "F43E482EC149C5B7C475152FA265B43F"/*LLAVE*/, idDocumento/*IDENTIFICADOR DEL DOCUMENTO*/, "bordados.francy@gmail.com"/*correo copia*/, "BORDADOS_FRANCY"/*USUARIO*/, "ed308938934731b734e9836bdb96ce57"/*llave emisor*/, true);
-            System.Windows.MessageBox.Show(response);
-            //#########################
-            /*
-             
-                USUARIO FIRMA:           BORDADOS_FRANCY  
-                LLAVE: ed308938934731b734e9836bdb96ce57
-
-
-                USUARIO:           BORDADOS_FRANCY  
-                LLAVE CERTIFICACIÓN:            F43E482EC149C5B7C475152FA265B43F  
-                NIT:  5347319
-             */
+            response = request.enviar_peticion_fel("BORDADOS_FRANCY"/*USUARIO*/, "F43E482EC149C5B7C475152FA265B43F"/*LLAVE*/, idDocumento/*IDENTIFICADOR DEL DOCUMENTO*/, "jcbautista95@gmail.com"/*correo copia*/, "BORDADOS_FRANCY"/*USUARIO*/, "ed308938934731b734e9836bdb96ce57"/*llave emisor*/, true);
+            Console.WriteLine(response);
             this.Close();
         }
         
@@ -224,6 +246,13 @@ namespace Bordados_proyect.Config_windows
         {
             
             this.Close();
+        }
+        public void saveCodigoFactura(int factura , string codigo)
+        {
+            connection.Open();
+            MySqlCommand cmd = new MySqlCommand("update factura set codigoFac = '"+codigo+"' where id="+facturaActual+"", connection);
+            cmd.ExecuteNonQuery();
+            connection.Close();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -320,6 +349,20 @@ namespace Bordados_proyect.Config_windows
             return data;
         }
 
+        private void btnDescuento_Click_1(object sender, RoutedEventArgs e)
+        {
+           
+            contadorDescuento++;
+            if (contadorDescuento > 5)
+            {
+                System.Windows.MessageBox.Show("Porcentaje maximo de descuento alcanzado , reiniciando contador");
+                return;
+            }
+                System.Windows.MessageBox.Show("El descuento actual es del " + (contadorDescuento * 5).ToString() + "%");
+            
+
+        }
+
         private void TextBox_KeyUp_1(object sender, System.Windows.Input.KeyEventArgs e)
         {
 
@@ -374,13 +417,55 @@ namespace Bordados_proyect.Config_windows
 
         private void Button1_Click(object sender, RoutedEventArgs e)
         {
+
+            bool Datos_generales;
+            bool Datos_emisor;
+            bool Datos_receptor;
+            bool Frases;
+            bool Item_un_impuesto;
+            bool Total_impuestos;
+            bool Totales;
+            bool Adenda;
+            bool Agregar_adenda;
+            string response;
+            string idDocumento;
+
+            Guid guid = Guid.NewGuid();
+            Console.WriteLine(guid);
+            idDocumento = guid.ToString().Substring(0, 8);
+
+            string fechaFac = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
             //boton para agregar observacion a facturas
-            connection.Open();
-            MySqlCommand cmd = new MySqlCommand("update factura set observacionFac='"+txtObservacion.Text+"' where factura.id="+facturaActual+"", connection);
-            cmd.ExecuteNonQuery();
-            connection.Close();
-            txtObservacion.Text = "";
-         }
+            //connection.Open();
+            //MySqlCommand cmd = new MySqlCommand("update factura set observacionFac='"+txtObservacion.Text+"' where factura.id="+facturaActual+"", connection);
+            //cmd.ExecuteNonQuery();
+            //connection.Close();
+            //txtObservacion.Text = "";
+
+            Datos_generales = request.Datos_generales("GTQ", fechaFac, "FACT", "", "");
+            Datos_emisor = request.Datos_emisor("GEN", 1, "01001", "bordados.francy@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "CIUDAD", "5347319", "CARLOS BAUTISTA", "BORDADOS FRANCY");
+            Datos_receptor = request.Datos_receptor("8266182", "Lorena Mazariegos", "01001", "jcbautista95@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "ciudad", "");
+            Frases = request.Frases(1, 2);
+
+            Item_un_impuesto = request.Item_un_impuesto("B", "UND", "1"/*CANTIDAD*/, "prueba", 1, "38.0000000000"/*PRECIO X UNIDAD*/,
+                    "38.0000000000"/*TOTAL SIN DESC*/, "0"/*DESCUENTO*/, "38.0000000000"/*TOTAL*/, "IVA", 1, "",
+                        "33.9285714286"/*MONTOGRAVABLE*/, "4.0714285714"/*MONTOIMPUESTO*/);
+            Item_un_impuesto = request.Item_un_impuesto("B", "UND", "1"/*CANTIDAD*/, "prueba", 2, "38.0000000000"/*PRECIO X UNIDAD*/,
+                    "38.0000000000"/*TOTAL SIN DESC*/, "0"/*DESCUENTO*/, "38.0000000000"/*TOTAL*/, "IVA", 1, "",
+                       "33.9285714286"/*MONTOGRAVABLE*/, "4.0714285714"/*MONTOIMPUESTO*/);
+
+
+
+
+            Total_impuestos = request.total_impuestos("IVA", "8.1428571429");
+            Totales = request.Totales("76.0000000000");
+            Adenda = request.Adendas("Codigo_cliente", "1");//Información Adicional
+            Adenda = request.Adendas("Observaciones", "ESTA ES UNA PRUEBA");
+
+            Agregar_adenda = request.Agregar_adendas();
+            response = request.enviar_peticion_fel("BORDADOS_FRANCY"/*USUARIO*/, "F43E482EC149C5B7C475152FA265B43F"/*LLAVE*/, idDocumento/*IDENTIFICADOR DEL DOCUMENTO*/, "jcbautista95@gmail.com"/*correo copia*/, "BORDADOS_FRANCY"/*USUARIO*/, "ed308938934731b734e9836bdb96ce57"/*llave emisor*/, true);
+            Console.WriteLine(response);
+        }
 
         public double redondearDecimales(double valorInicial, int numeroDecimales)
         {
