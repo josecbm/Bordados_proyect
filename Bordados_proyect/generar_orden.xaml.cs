@@ -313,7 +313,7 @@ namespace Bordados_proyect
                 "inner join prenda on movimiento.idPrenda = prenda.id" +
                 " inner join tipoprenda on prenda.idTipoPrenda = tipoprenda.id" +
                 " inner join talla on prenda.idTalla = talla.id " +
-                "inner join empresa on prenda.idEmpresa = empresa.id where idBodega = 1 and Prenda.id,nombrePrenda like('%" + txtBuscador.Text + "%')", connection);
+                "inner join empresa on prenda.idEmpresa = empresa.id where idBodega = 1 and nombrePrenda like('%" + txtBuscador.Text + "%')", connection);
             DataTable dt = new DataTable();
             dt.Load(cmd.ExecuteReader());
             dt_prendas_bodega_tienda.DataContext = dt;
@@ -505,6 +505,10 @@ namespace Bordados_proyect
                     MySqlCommand cmd3 = new MySqlCommand(insertPedido, connection);
                     cmd3.ExecuteNonQuery();
                     connection.Close();
+                    //insertando en detalle para facturar
+
+                    //connection.Open();
+                    //string insertDetallesSinRebajar = "insert into detalle(cantidad, precioTotal , idPrenda, idFactura ) values("+cantidad+" ,"+ valorTotal + " , "+ Int32.Parse(descripcion[1]) + " , "+ lastFactura + " ); "
                 }
                 else
                 {

@@ -1,0 +1,41 @@
+﻿<Window x:Class="Bordados_proyect.Config_windows.AnticipoBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bordados_proyect.Config_windows"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="AnticipoBox" Height="300" Width="400" WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="37*"/>
+            <RowDefinition Height="406*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="GridBarraTitulo" Background="#FF0D6CBA" MouseDown="GridBarraTitulo_MouseDown" Margin="0,0,-0.4,268.6" Grid.RowSpan="2"  >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Background="{x:Null}" >
+                <Button x:Name="btnNotificacion" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white">
+                    <materialDesign:PackIcon Kind="Bell"/>
+                </Button>
+                <Button x:Name="btnMinimize" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white" Click="BtnMinimize_Click" >
+                    <materialDesign:PackIcon Kind="WindowMinimize"/>
+                </Button>
+                <Button x:Name="btnPower" Style="{ StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="white" Click="BtnPower_Click">
+                    <materialDesign:PackIcon Kind="Power"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Background="Gainsboro" Margin="0,0.2,-0.4,-0.4" Grid.Row="1">
+            <Rectangle Fill="#FFFAFAFA" HorizontalAlignment="Left" Height="145" Margin="35,36,0,0" RadiusY="10" RadiusX="10" VerticalAlignment="Top" Width="332"/>
+            <Label x:Name="label_Copy" Content="Total factura:" HorizontalAlignment="Left" Margin="69,51,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Label x:Name="lblTotalFactura"  HorizontalAlignment="Left" Margin="159,51,0,0" VerticalAlignment="Top" Width="150"/>
+            <Label x:Name="label_Copy1" Content="Anticipo:" HorizontalAlignment="Left" Margin="69,98,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Button x:Name="btnAceptarAnticipo" Content="Aceptar" HorizontalAlignment="Left" Margin="232,209,0,0" VerticalAlignment="Top" Width="91" Click="btnAceptarAnticipo_Click"/>
+            <Button x:Name="btnCancelar" Content="Cancelar" HorizontalAlignment="Left" Margin="69,209,0,0" VerticalAlignment="Top" Width="101"/>
+            <TextBox x:Name="txtAnticipo" HorizontalAlignment="Left" Height="23" Margin="135,98,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="137" DataContextChanged="txtAnticipo_DataContextChanged"/>
+            <Label x:Name="lblRestante"   HorizontalAlignment="Left" Margin="135,146,0,0" VerticalAlignment="Top" Height="23" Width="89"/>
+            <Label x:Name="label_Copy2" Content="Restante:" HorizontalAlignment="Left" Margin="67,146,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        </Grid>
+
+    </Grid>
+</Window>

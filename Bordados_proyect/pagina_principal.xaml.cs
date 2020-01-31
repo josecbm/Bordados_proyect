@@ -76,8 +76,6 @@ namespace Bordados_proyect
             showOrdenesPendientes();
             ventaDia();
             pedidosPendientesDia();
-            showInventarioTienda();
-            showFacturas();
             //            showFacturas();
         }
 

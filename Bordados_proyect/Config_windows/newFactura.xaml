@@ -27,25 +27,28 @@
         </Grid>
 
         <DataGrid x:Name="dataGrid_factura" HorizontalAlignment="Left" Height="423" Margin="0,0,-0.4,0" Grid.Row="1" Background="Gainsboro" VerticalAlignment="Top" Width="794"/>
-        <Rectangle Margin="52,130,58,78" Fill="#FFFAFAFA" RadiusX="10" RadiusY="10" Grid.Row="1"/>
-        <DataGrid x:Name="dt_ordenes_pend" ItemsSource="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="664" Height="231" Margin="63,170,67,118"  Grid.Row="1"/>
+        <Rectangle Margin="20,128.2,38.6,104" Fill="#FFFAFAFA" RadiusX="10" RadiusY="10" Grid.Row="1"/>
+        <DataGrid x:Name="dt_ordenes_pend" ItemsSource="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="706" Height="261" Margin="30,128.2,57.6,130"  Grid.Row="1"/>
         <Button x:Name="btnFacturar" Content="Facturar" HorizontalAlignment="Left" Margin="355,454,0,0" Grid.Row="1" VerticalAlignment="Top" Width="86" Height="33" Click="BtnFacturar_Click"/>
         <Button x:Name="btnCancelar" Content="Cancelar" HorizontalAlignment="Left" Margin="480,454,0,0" Grid.Row="1" VerticalAlignment="Top" Width="92" Click="BtnCancelar_Click"/>
         <Label x:Name="label" Content="Datos de la factura" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <Button x:Name="button" Content="Nuevo Cliente" HorizontalAlignment="Left" Margin="601,455,0,0" Grid.Row="1" VerticalAlignment="Top" Width="126" Click="Button_Click" RenderTransformOrigin="0.563,2.938"/>
-        <Label x:Name="label1" Content="Total: " HorizontalAlignment="Left" Margin="480,401,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" RenderTransformOrigin="0.537,3.323"/>
-        <Label x:Name="label2" HorizontalAlignment="Left" Margin="526,406,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.7,0.7"/>
+        <Label x:Name="label1" Content="Total: " HorizontalAlignment="Left" Margin="443,384.2,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" RenderTransformOrigin="0.537,3.323" FontWeight="Bold"/>
+        <Label x:Name="label2" HorizontalAlignment="Left" Margin="480,384.2,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.7,0.7" FontWeight="Bold"/>
 
-        <Border BorderBrush="white" Background="White" BorderThickness="1" HorizontalAlignment="Left" Height="71" Margin="63,36,0,0" Grid.Row="1" VerticalAlignment="Top" Width="113">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="1,23,-1,-1">
+        <Border BorderBrush="white" Background="White" BorderThickness="1" HorizontalAlignment="Left" Height="87" Margin="63,36.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="171">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="1.2,23.2,-0.6,9">
                 <StackPanel x:Name="resultStack" Height="76"/>
             </ScrollViewer>
         </Border>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="63,36,0,0" Grid.Row="1" TextWrapping="Wrap" materialDesign:HintAssist.Hint="buscar cliente" KeyUp="TextBox_KeyUp"  VerticalAlignment="Top" Width="129"/>
-        <Button x:Name="btnDescuento" Content="Descuento" HorizontalAlignment="Left" Margin="97,455,0,0" Grid.Row="1" VerticalAlignment="Top" Width="109" Click="btnDescuento_Click_1"/>
-        <Rectangle Fill="#FFFAFAFA" HorizontalAlignment="Left" Height="23" Margin="225,56,0,0" RadiusY="10" Grid.Row="1" RadiusX="10" VerticalAlignment="Top" Width="241"/>
-        <Button x:Name="button1" Content="Observacion" HorizontalAlignment="Left" Height="26" Margin="495,52,0,0" Grid.Row="1" VerticalAlignment="Top" Width="112" Click="Button1_Click"/>
-        <TextBlock x:Name="txtObservacion" HorizontalAlignment="Left" Height="23" Margin="243,55,0,0" Grid.Row="1" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Observacion"  VerticalAlignment="Top" Width="212"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="63,36.2,0,0" Grid.Row="1" TextWrapping="Wrap" materialDesign:HintAssist.Hint="buscar cliente" KeyUp="TextBox_KeyUp"  VerticalAlignment="Top" Width="171"/>
+        <Button x:Name="btnDescuento" Content="Descuento" HorizontalAlignment="Left" Margin="52,464.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="109" Click="btnDescuento_Click_1"/>
+        <Rectangle Fill="#FFFAFAFA" HorizontalAlignment="Left" Height="43" Margin="402,44.2,0,0" RadiusY="10" Grid.Row="1" RadiusX="10" VerticalAlignment="Top" Width="241"/>
+        <Button x:Name="button1" Content="Observacion" HorizontalAlignment="Left" Height="26" Margin="672,60.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="112" Click="Button1_Click"/>
+        <TextBlock x:Name="txtObservacion" HorizontalAlignment="Left" Height="23" Margin="418,60.2,0,0" Grid.Row="1" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Observacion"  VerticalAlignment="Top" Width="212"/>
+        <Rectangle Fill="#FFFAFAFA" HorizontalAlignment="Left" Height="61" Margin="254,45.2,0,0" RadiusY="10" Grid.Row="1" RadiusX="10" VerticalAlignment="Top" Width="133"/>
+        <RadioButton x:Name="radioAnticipo" Content="Anticipo" HorizontalAlignment="Left" Margin="284,45.2,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <RadioButton x:Name="radioComplemento" Content="Complemento" HorizontalAlignment="Left" Margin="284,72.2,0,0" Grid.Row="1" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

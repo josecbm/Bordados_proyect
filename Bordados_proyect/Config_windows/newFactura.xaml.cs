@@ -64,10 +64,13 @@ namespace Bordados_proyect.Config_windows
         {
             connection.Open();
 
-            MySqlCommand cmd2 = new MySqlCommand("select d.cantidad, p.nombrePrenda, p.id , d.precioTotal , f.fecha  from factura f "+
-            "inner join detalle d on f.id = d.idFactura "+
-            "inner join prenda p on d.idPrenda = p.id "+
-            "where f.id ="+facturaActual+" ;", connection);
+            MySqlCommand cmd2 = 
+                new MySqlCommand("select d.cantidad, p.nombrePrenda, p.id, t.descripcion as talla , e.nombreEmpresa , d.precioTotal , f.fecha  from factura f "+
+            " inner join detalle d on f.id = d.idFactura "+
+            " inner join prenda p on d.idPrenda = p.id "+
+            " inner join empresa e on e.id = p.idEmpresa"+
+            " inner join talla t on t.id = p.idTalla"+
+            " where f.id =" +facturaActual+" ;", connection);
 
            dt2= new DataTable();
             dt2.Load(cmd2.ExecuteReader());
@@ -93,6 +96,38 @@ namespace Bordados_proyect.Config_windows
 
         private void BtnFacturar_Click(object sender, RoutedEventArgs e)
         {
+            if (textBox.Text.Equals(""))
+            {
+                System.Windows.MessageBox.Show("Seleccione un cliente");
+                return;
+            }
+
+            string[] cadenaCliente = textBox.Text.Split('-');
+
+            connection.Open();
+            MySqlCommand cmddataCliente = new MySqlCommand("select id , nombre , direccion , email , nit from cliente where id = " + cadenaCliente[2] + "", connection);
+            MySqlDataReader fA = cmddataCliente.ExecuteReader();
+            while (fA.Read())
+            {
+                idReceptor = fA.GetString(0);
+                nombreReceptor = fA.GetString(1);
+                direccionReceptor = fA.GetString(2);
+                correoReceptor = fA.GetString(3);
+                nitReceptor = fA.GetString(4);
+            }
+
+            connection.Close();
+            if ((bool)radioAnticipo.IsChecked)
+            {
+                // si viene por complemento 
+                Config_windows.AnticipoBox anticipo = new Config_windows.AnticipoBox(facturaActual ,totalFacturaActual ,correoReceptor , nitReceptor , nombreReceptor , direccionReceptor  );
+                anticipo.Show();
+                return;
+
+            }else if ((bool)radioComplemento.IsChecked)
+            {
+
+            }
             //rstring NombreCorto1, int CodigoUnidadGravable1, string CantidadUnidadesGravables1, string MontoGravable1, string MontoImpuesto1);
             decimal preciocantidad=0;
             int codigoUnidadGravable = 0;
@@ -126,7 +161,7 @@ namespace Bordados_proyect.Config_windows
             bool Adenda;
             bool Agregar_adenda;
 
-            string quantity, nombrePrenda, precio;
+            string quantity, nombrePrenda, precio ,idPrenda , talla , nombreEmpresa;
 
             string mg;
             //bool Complemento_notas;
@@ -136,27 +171,11 @@ namespace Bordados_proyect.Config_windows
 
 
 
-            if (textBox.Text.Equals(""))
-            {
-                System.Windows.MessageBox.Show("Seleccione un cliente");
-                return;
-            }
+           
 
             // buscar cliente y llengar parametros ;
-            string[] cadenaCliente = textBox.Text.Split('-');
-            connection.Open();
-            MySqlCommand cmddataCliente = new MySqlCommand("select id , nombre , direccion , email , nit from cliente where id = "+cadenaCliente[2]+"", connection);
-            MySqlDataReader fA = cmddataCliente.ExecuteReader();
-            while (fA.Read())
-            {
-                idReceptor = fA.GetString(0);
-                nombreReceptor = fA.GetString(1);
-                direccionReceptor = fA.GetString(2);
-                correoReceptor = fA.GetString(3) ;
-                nitReceptor = fA.GetString(4);
-            }
+           
             
-            connection.Close();
 
             connection.Open();
             MySqlCommand cmd = new MySqlCommand("update factura set cobro = 1 , idCliente = "+cadenaCliente[2]+"  where factura.id="+facturaActual+"" , connection);
@@ -169,12 +188,14 @@ namespace Bordados_proyect.Config_windows
 
 
             Datos_generales = request.Datos_generales("GTQ", fechaFac, "FACT", "", "");
-            Datos_emisor = request.Datos_emisor("GEN", 1, "01001", "bordados.francy@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "CIUDAD", "5347319", "CARLOS BAUTISTA", "BORDADOS FRANCY");
+            Datos_emisor = request.Datos_emisor("GEN", 1, "01001", "bordados.francy@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "30 Av. 1-13 , zona 7 Jardines de Utatlan 1", "5347319", "CARLOS BAUTISTA", "BORDADOS FRANCY");
             Datos_receptor = request.Datos_receptor(nitReceptor, nombreReceptor , "01001", correoReceptor, "GT", "GUATEMALA", "GUATEMALA", direccionReceptor, "");
             Frases = request.Frases(1,2);
             Frases = request.Frases(2, 1);
             foreach (DataRow row in dt2.Rows)
             {
+
+
 
                 try
                 {
@@ -182,6 +203,9 @@ namespace Bordados_proyect.Config_windows
                     quantity = row["cantidad"].ToString();
                     nombrePrenda = row["nombrePrenda"].ToString();
                     precio = row["precioTotal"].ToString();
+                    idPrenda = row["id"].ToString();
+                    talla = row["talla"].ToString();
+                    nombreEmpresa = row["nombreEmpresa"].ToString();
                     precioUnitario = Decimal.Parse(precio) / int.Parse(quantity);
 
                     preciocantidad = montoGravable = montoImpuesto = 0;
@@ -219,7 +243,7 @@ namespace Bordados_proyect.Config_windows
                 string precioUNitariostr = precioUnitario.ToString("N10");
 
 
-                Item_un_impuesto = request.Item_un_impuesto("B", "UND", quantity/*CANTIDAD*/, nombrePrenda, iterator, precioUnitario.ToString("N10")/*PRECIO X UNIDAD*/,
+                Item_un_impuesto = request.Item_un_impuesto("B", "UND", quantity/*CANTIDAD*/, idPrenda + " "+nombrePrenda+" T/"+talla+ " "+nombreEmpresa+" ", iterator, precioUnitario.ToString("N10")/*PRECIO X UNIDAD*/,
                     precioTotal.ToString("N10")/*TOTAL SIN DESC*/, descuento.ToString()/*DESCUENTO*/, totalLinea.ToString("N10")/*TOTAL*/, "IVA", 1, "",
                     montoSinIva.ToString("N10")/*MONTOGRAVABLE*/, montoIva.ToString("N10")/*MONTOIMPUESTO*/);
                 TotalFactura += (montoGravable + montoImpuesto);
@@ -233,10 +257,10 @@ namespace Bordados_proyect.Config_windows
             Total_impuestos = request.total_impuestos("IVA", imp.ToString("N10"));
             Totales = request.Totales(tot.ToString("N10"));
             Adenda = request.Adendas("Codigo_cliente", idReceptor.ToString());//Información Adicional
-            Adenda = request.Adendas("Observaciones", "ESTA ES UNA PRUEBA");
+            //Adenda = request.Adendas("Observaciones", "ESTA ES UNA PRUEBA");
 
             Agregar_adenda = request.Agregar_adendas();
-            response = request.enviar_peticion_fel("BORDADOS_FRANCY"/*USUARIO*/, "F43E482EC149C5B7C475152FA265B43F"/*LLAVE*/, idDocumento/*IDENTIFICADOR DEL DOCUMENTO*/, "jcbautista95@gmail.com"/*correo copia*/, "BORDADOS_FRANCY"/*USUARIO*/, "ed308938934731b734e9836bdb96ce57"/*llave emisor*/, true);
+            response = request.enviar_peticion_fel("BORDADOS_FRANCY"/*USUARIO*/, "F43E482EC149C5B7C475152FA265B43F"/*LLAVE*/, idDocumento/*IDENTIFICADOR DEL DOCUMENTO*/, "jcbautista95@gmail.com,jcbautista95@gmail.com"/*correo copia*/, "BORDADOS_FRANCY"/*USUARIO*/, "ed308938934731b734e9836bdb96ce57"/*llave emisor*/, true);
             Console.WriteLine(response);
             this.Close();
         }
@@ -250,7 +274,7 @@ namespace Bordados_proyect.Config_windows
         public void saveCodigoFactura(int factura , string codigo)
         {
             connection.Open();
-            MySqlCommand cmd = new MySqlCommand("update factura set codigoFac = '"+codigo+"' where id="+facturaActual+"", connection);
+            MySqlCommand cmd = new MySqlCommand("update factura set codigo = '"+codigo+"' where id="+facturaActual+"", connection);
             cmd.ExecuteNonQuery();
             connection.Close();
         }
@@ -429,30 +453,41 @@ namespace Bordados_proyect.Config_windows
             bool Agregar_adenda;
             string response;
             string idDocumento;
+            decimal montoGravable, montoImpuesto;
 
             Guid guid = Guid.NewGuid();
             Console.WriteLine(guid);
             idDocumento = guid.ToString().Substring(0, 8);
 
             string fechaFac = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
-            //boton para agregar observacion a facturas
-            //connection.Open();
-            //MySqlCommand cmd = new MySqlCommand("update factura set observacionFac='"+txtObservacion.Text+"' where factura.id="+facturaActual+"", connection);
-            //cmd.ExecuteNonQuery();
-            //connection.Close();
-            //txtObservacion.Text = "";
 
+
+            string[] cadenaCliente = textBox.Text.Split('-');
+            connection.Open();
+            MySqlCommand cmddataCliente = new MySqlCommand("select id , nombre , direccion , email , nit from cliente where id = " + cadenaCliente[2] + "", connection);
+            MySqlDataReader fA = cmddataCliente.ExecuteReader();
+            while (fA.Read())
+            {
+                idReceptor = fA.GetString(0);
+                nombreReceptor = fA.GetString(1);
+                direccionReceptor = fA.GetString(2);
+                correoReceptor = fA.GetString(3);
+                nitReceptor = fA.GetString(4);
+            }
+
+            connection.Close();
             Datos_generales = request.Datos_generales("GTQ", fechaFac, "FACT", "", "");
-            Datos_emisor = request.Datos_emisor("GEN", 1, "01001", "bordados.francy@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "CIUDAD", "5347319", "CARLOS BAUTISTA", "BORDADOS FRANCY");
-            Datos_receptor = request.Datos_receptor("8266182", "Lorena Mazariegos", "01001", "jcbautista95@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "ciudad", "");
+            Datos_emisor = request.Datos_emisor("GEN", 1, "01001", "bordados.francy@gmail.com", "GT", "GUATEMALA", "GUATEMALA", "30 Av. 1-13 , zona 7 Jardines de Utatlan 1", "5347319", "CARLOS BAUTISTA", "BORDADOS FRANCY");
+            Datos_receptor = request.Datos_receptor(nitReceptor, nombreReceptor, "01001", correoReceptor, "GT", "GUATEMALA", "GUATEMALA", direccionReceptor, "");
             Frases = request.Frases(1, 2);
+            Frases = request.Frases(2, 1);
 
-            Item_un_impuesto = request.Item_un_impuesto("B", "UND", "1"/*CANTIDAD*/, "prueba", 1, "38.0000000000"/*PRECIO X UNIDAD*/,
+            
+
+            Item_un_impuesto = request.Item_un_impuesto("S", "UND", "1"/*CANTIDAD*/, "prueba", 1, "38.0000000000"/*PRECIO X UNIDAD*/,
                     "38.0000000000"/*TOTAL SIN DESC*/, "0"/*DESCUENTO*/, "38.0000000000"/*TOTAL*/, "IVA", 1, "",
                         "33.9285714286"/*MONTOGRAVABLE*/, "4.0714285714"/*MONTOIMPUESTO*/);
-            Item_un_impuesto = request.Item_un_impuesto("B", "UND", "1"/*CANTIDAD*/, "prueba", 2, "38.0000000000"/*PRECIO X UNIDAD*/,
-                    "38.0000000000"/*TOTAL SIN DESC*/, "0"/*DESCUENTO*/, "38.0000000000"/*TOTAL*/, "IVA", 1, "",
-                       "33.9285714286"/*MONTOGRAVABLE*/, "4.0714285714"/*MONTOIMPUESTO*/);
+            
 
 
 

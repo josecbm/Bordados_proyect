@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:Bordados_proyect.Config_windows"
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="newCliente" Height="600" Width="600" ResizeMode="NoResize" WindowStyle="None">
+        Title="newCliente" Height="600" Width="800" ResizeMode="NoResize" WindowStyle="None">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="16*"/>
             <RowDefinition Height="37*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Margin="0,0,0,419" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="28*"/>
                 <RowDefinition Height="153*"/>
@@ -30,26 +30,26 @@
                     </Button>
                 </StackPanel>
             </Grid>
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="35,51,0,0" TextWrapping="Wrap" Text="Nombre:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="46"/>
-            <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="127,44,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese el nombre" Grid.Row="1"/>
-            <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="35,82,0,0" TextWrapping="Wrap" Text="Direccion:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="52"/>
-            <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" Margin="35,113,0,0" TextWrapping="Wrap" Text="Telefono:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="39"/>
-            <TextBox x:Name="txtDireccion" HorizontalAlignment="Left" Height="23" Margin="127,81,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese la direccion" Grid.Row="1"/>
-            <TextBox x:Name="txtTelefono" HorizontalAlignment="Left" Height="23" Margin="127,113,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese telefono" Grid.Row="1"/>
-            <TextBlock x:Name="textBlock_Copy2" HorizontalAlignment="Left" Margin="281,50,0,0" TextWrapping="Wrap" Text="Nit:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="19"/>
-            <TextBox x:Name="txtNit" HorizontalAlignment="Left" Height="23" Margin="373,43,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese el nit" Grid.Row="1"/>
-            <TextBlock x:Name="textBlock_Copy4" HorizontalAlignment="Left" Margin="281,85,0,0" TextWrapping="Wrap" Text="Correo:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="60"/>
-            <TextBox x:Name="txtCorreo" HorizontalAlignment="Left" Height="23" Margin="373,75,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese el correo" Grid.Row="1"/>
-            <Button x:Name="btnAceptar" Content="Agregar" HorizontalAlignment="Left" Margin="362,115,0,0" VerticalAlignment="Top" Width="87" Background="#FF1CA261" Click="BtnAceptar_Click" Grid.Row="1"/>
-            <Button x:Name="btnOtro" Content="Cancelar" HorizontalAlignment="Left" Margin="469,115,0,0" VerticalAlignment="Top" Width="90" Background="#FFDD5044" Click="BtnOtro_Click" Grid.Row="1"/>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="40,51,0,0" TextWrapping="Wrap" Text="Nombre:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="58" RenderTransformOrigin="0.669,0.65"/>
+            <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="127,44,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="262"  materialDesign:HintAssist.Hint="Ingrese el nombre" Grid.Row="1"/>
+            <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="422,44,0,0" TextWrapping="Wrap" Text="Direccion:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="58"/>
+            <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" Margin="40,117,0,0" TextWrapping="Wrap" Text="Telefono:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="53"/>
+            <TextBox x:Name="txtDireccion" HorizontalAlignment="Left" Height="23" Margin="509,43,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="262"  materialDesign:HintAssist.Hint="Ingrese la direccion" Grid.Row="1"/>
+            <TextBox x:Name="txtTelefono" HorizontalAlignment="Left" Height="23" Margin="127,113,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="121"  materialDesign:HintAssist.Hint="Ingrese telefono" Grid.Row="1"/>
+            <TextBlock x:Name="textBlock_Copy2" HorizontalAlignment="Left" Margin="40,85,0,0" TextWrapping="Wrap" Text="Nit:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="19" RenderTransformOrigin="1.2,0.412"/>
+            <TextBox x:Name="txtNit" HorizontalAlignment="Left" Height="30" Margin="128,75,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"  materialDesign:HintAssist.Hint="Ingrese el nit" Grid.Row="1"/>
+            <TextBlock x:Name="textBlock_Copy4" HorizontalAlignment="Left" Margin="420,79,0,0" TextWrapping="Wrap" Text="Correo:" VerticalAlignment="Top" Grid.Row="1" Height="16" Width="60"/>
+            <TextBox x:Name="txtCorreo" HorizontalAlignment="Left" Height="29" Margin="512,69,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="186"  materialDesign:HintAssist.Hint="Ingrese el correo" Grid.Row="1"/>
+            <Button x:Name="btnAceptar" Content="Agregar" HorizontalAlignment="Left" Margin="501,109,0,0" VerticalAlignment="Top" Width="87" Background="#FF1CA261" Click="BtnAceptar_Click" Grid.Row="1"/>
+            <Button x:Name="btnOtro" Content="Cancelar" HorizontalAlignment="Left" Margin="608,109,0,0" VerticalAlignment="Top" Width="90" Background="#FFDD5044" Click="BtnOtro_Click" Grid.Row="1"/>
 
         </Grid>
         <Grid Height="25" VerticalAlignment="Top" Margin="17" Grid.Row="1">
             <TextBox x:Name="textBox_buscador" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap"  VerticalAlignment="Top" Width="300"  materialDesign:HintAssist.Hint="Buscar  clientes en la base de datos" KeyUp="TextBox_buscador_KeyUp"/>
 
         </Grid>
-        <Grid Grid.Row="1">
-            <DataGrid x:Name="dtClientes" ItemsSource="{Binding}" VerticalAlignment="Top" Height="303" Width="550" Margin="0,47,0,0"></DataGrid>
+        <Grid Grid.Row="1" Margin="0,0.2,10,0">
+            <DataGrid x:Name="dtClientes" ItemsSource="{Binding}" VerticalAlignment="Top" Height="347" Margin="10,53,0.4,0"/>
         </Grid>
     </Grid>
 </Window>
